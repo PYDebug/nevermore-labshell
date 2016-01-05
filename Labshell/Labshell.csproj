@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\WateMarkTextBox.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,6 +97,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\close-window-sr.png" />
+    <Resource Include="images\close-window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\main-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\btn-bg-large.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\btn-bg-large-sr.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

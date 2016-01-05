@@ -23,6 +23,26 @@ namespace Labshell
         public MainWindow()
         {
             InitializeComponent();
+            initData();
+        }
+
+        private void initData() 
+        {
+            this.number.WateMark = "请输入学号";
+            this.password.WateMark = "请输入密码";
+        }
+
+        private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MouseDownEventHandle(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }
