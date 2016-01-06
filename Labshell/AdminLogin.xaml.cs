@@ -10,26 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Labshell
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// AdminLogin.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AdminLogin : Window
     {
-        public MainWindow()
+        public AdminLogin()
         {
             InitializeComponent();
             initData();
         }
 
-        private void initData() 
+        private void initData()
         {
-            this.number.WateMark = "请输入学号";
-            this.password.WateMark = "请输入密码";
+            number.WateMark = "学工号或手机号";
+            password.WateMark = "密码";
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -50,12 +49,10 @@ namespace Labshell
             }
         }
 
-        private void AdminLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void BackLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            AdminLogin adminLogin = new AdminLogin();
-            adminLogin.Show();
-            adminLogin.Owner = this;
-            this.Hide();
+            this.Owner.Show();
+            this.Close();
         }
     }
 }
