@@ -30,7 +30,20 @@
             <Button x:Name="startButton" Content="开始实验" HorizontalAlignment="Left" Height="34" Margin="373,285,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LargeButton}" Foreground="White"/>
             <Label x:Name="admin_Copy" Content="不登陆，直接实验" HorizontalAlignment="Left" Margin="503,326,0,0" VerticalAlignment="Top" Foreground="#FF00A1CC" Cursor="Hand"/>
             <Button x:Name="resetButton" Content="重置" HorizontalAlignment="Left" Height="21" Margin="543,102,0,0" VerticalAlignment="Top" Width="66" Style="{DynamicResource SmallButton}" Foreground="White" FontSize="11"/>
-            <ListBox HorizontalAlignment="Left" Height="136" Margin="373,132,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LSListBox}"/>
+            <ListBox x:Name="studentList" HorizontalAlignment="Left" Height="114" Margin="373,154,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LSListBox}" ItemContainerStyle="{DynamicResource ListBoxItem}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Number}" Padding="0,0,10,0" Height="23" Width="78" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center"/>
+                            <Label Content="{Binding Name}" Padding="0,0,15,0" Height="23" Width="79" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center"/>
+                            <Label Content="移除" Tag="{Binding Number}" Padding="0,0,15,0" Height="23" Width="79" HorizontalContentAlignment="Center" FontSize="11" Foreground="Red" VerticalContentAlignment="Center" MouseDown="RemoveLabel_MouseDown" Cursor="Hand"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Label Content="学号" HorizontalAlignment="Left" Height="23" Margin="373,131,0,0" VerticalAlignment="Top" Width="78" HorizontalContentAlignment="Center" BorderThickness="1,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
+            <Label Content="姓名" HorizontalAlignment="Left" Height="23" Margin="451,131,0,0" VerticalAlignment="Top" Width="79" HorizontalContentAlignment="Center" BorderThickness="0,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
+            <Label Content="操作" HorizontalAlignment="Left" Height="23" Margin="530,131,0,0" VerticalAlignment="Top" Width="79" HorizontalContentAlignment="Center" BorderThickness="0,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
         </Grid>
         <Label x:Name="videoInfo" Content="摄像头正常" HorizontalAlignment="Left" Margin="663,438,0,0" VerticalAlignment="Top"/>
         <Image x:Name="videoState" HorizontalAlignment="Left" Height="15" Margin="647,443,0,0" VerticalAlignment="Top" Width="16" Source="images/ic-good.png"/>

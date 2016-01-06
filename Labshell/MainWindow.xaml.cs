@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Labshell.Model;
 
 namespace Labshell
 {
@@ -20,6 +21,8 @@ namespace Labshell
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Student> students = new List<Student>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +33,11 @@ namespace Labshell
         {
             this.number.WateMark = "请输入学号";
             this.password.WateMark = "请输入密码";
+            Student student1 = new Student() { Number = "1435846", Name = "潘岩"};
+            students.Add(student1);
+            Student student2 = new Student() { Number = "091116", Name = "郭意亮" };
+            students.Add(student2);
+            this.studentList.ItemsSource = students;
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -56,6 +64,12 @@ namespace Labshell
             adminLogin.Show();
             adminLogin.Owner = this;
             this.Hide();
+        }
+
+        private void RemoveLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Label label = sender as Label;
+            MessageBox.Show(label.Tag.ToString());
         }
     }
 }
