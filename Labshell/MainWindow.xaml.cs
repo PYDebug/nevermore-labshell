@@ -37,6 +37,11 @@ namespace Labshell
             Close();
         }
 
+        private void MinButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
         private void MouseDownEventHandle(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
