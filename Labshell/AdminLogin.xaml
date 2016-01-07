@@ -15,9 +15,9 @@
             </Grid.Background>
             <Label Content="同济大学航力云平台" HorizontalAlignment="Left" Height="40" Margin="53,35,0,0" VerticalAlignment="Top" Width="222" FontSize="23" Foreground="#FF4A4A4A" FontWeight="SemiBold"/>
             <Label Content="正在进入管理员模式" HorizontalAlignment="Left" Margin="104,75,0,0" VerticalAlignment="Top" Foreground="#FFF5A623" FontSize="10"/>
-            <local:WateMarkTextBox x:Name="number" HorizontalAlignment="Left" Height="34" Margin="53,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-            <local:WateMarkTextBox x:Name="password" HorizontalAlignment="Left" Height="34" Margin="53,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222"/>
-            <Button HorizontalAlignment="Left" Height="39" Margin="53,209,0,0" VerticalAlignment="Top" Width="222" Style="{DynamicResource LargeButton}" Foreground="White" Cursor="Hand" Content="进入管理员模式"/>
+            <TextBox x:Name="number" HorizontalAlignment="Left" Height="34" Margin="53,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222" Style="{StaticResource DefaultTextBox}" local:ControlAttachProperty.Watermark="学工号或者手机号" local:ControlAttachProperty.CornerRadius="5"/>
+            <PasswordBox x:Name="password" HorizontalAlignment="Left" Height="34" Margin="53,154,0,0" VerticalAlignment="Top" Width="222" Style="{StaticResource DefaultPasswordBox}" local:WaterMarkText.Text="密码" local:ControlAttachProperty.CornerRadius="5"/>
+            <Button HorizontalAlignment="Left" Height="39" Margin="53,209,0,0" VerticalAlignment="Top" Width="222" Style="{DynamicResource LargeButton}" Foreground="White" Cursor="Hand" Content="进入管理员模式" Click="EnterButton_Click"/>
             <Label Content="返回" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Foreground="#FF00A1CC" Margin="50,253,0,0" MouseDown="BackLabel_MouseDown"/>
             <Label Content="获取帮助" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="Hand" Foreground="#FF9B9B9B" Margin="220,253,0,0"/>
         </Grid>

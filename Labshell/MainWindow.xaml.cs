@@ -31,8 +31,6 @@ namespace Labshell
 
         private void initData() 
         {
-            this.number.WateMark = "请输入学号";
-            this.password.WateMark = "请输入密码";
             Student student1 = new Student() { Number = "1435846", Name = "潘岩"};
             students.Add(student1);
             Student student2 = new Student() { Number = "091116", Name = "郭意亮" };

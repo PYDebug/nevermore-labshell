@@ -11,15 +11,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Labshell.Model;
 
 namespace Labshell
 {
     /// <summary>
-    /// AdminLogin.xaml 的交互逻辑
+    /// ConfigWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class AdminLogin : Window
+    public partial class ConfigWindow : Window
     {
-        public AdminLogin()
+        private List<Lab> labs = new List<Lab>();
+
+        public ConfigWindow()
         {
             InitializeComponent();
             initData();
@@ -27,7 +30,13 @@ namespace Labshell
 
         private void initData()
         {
-            
+            Lab lab1 = new Lab() { Id = 1, Name = "本部-扭转115", MachineNumber = 10, StudentNumber = 20 };
+            Lab lab2 = new Lab() { Id = 2, Name = "本部-扭转117", MachineNumber = 20, StudentNumber = 40 };
+            labs.Add(lab1);
+            labs.Add(lab2);
+            this.labList.ItemsSource = labs;
+            this.labList.DisplayMemberPath = "Name";
+            this.labList.SelectedValuePath = "Id";
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -46,19 +55,6 @@ namespace Labshell
             {
                 DragMove();
             }
-        }
-
-        private void BackLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Owner.Show();
-            this.Close();
-        }
-
-        private void EnterButton_Click(object sender, RoutedEventArgs e)
-        {
-            ConfigWindow configWindow = new ConfigWindow();
-            configWindow.Show();
-            this.Close();
         }
     }
 }
