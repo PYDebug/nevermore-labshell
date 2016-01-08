@@ -39,11 +39,16 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="{TemplateBinding Background}" x:Name="Bg" Grid.ColumnSpan="2" Margin="0,1,1,1"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"  Opacity="0.3"/>
-                        <TextBlock Grid.Column="1" x:Name="FIcon" FontSize="{Binding Path=(local:ControlAttachProperty.FIconSize),RelativeSource={RelativeSource TemplatedParent}}"
+                        <Image local:ControlAttachProperty.AllowsAnimation="{TemplateBinding IsChecked}" HorizontalAlignment="Left" Height="19" Margin="213,7,0,0" VerticalAlignment="Top" Width="14" Source="/Labshell;component/images/unfold.png"/>
+                        <!--<TextBlock Grid.Column="1" x:Name="FIcon" FontSize="{Binding Path=(local:ControlAttachProperty.FIconSize),RelativeSource={RelativeSource TemplatedParent}}"
                                    Text="{TemplateBinding local:ControlAttachProperty.FIcon}" 
                                    local:ControlAttachProperty.AllowsAnimation="{TemplateBinding IsChecked}"
                                    Foreground="{TemplateBinding Foreground}" Style="{StaticResource FIcon}"
-                                   Margin="{TemplateBinding local:ControlAttachProperty.FIconMargin}"/>
+                                   Margin="{TemplateBinding local:ControlAttachProperty.FIconMargin}">
+                            <TextBlock.Background>
+                                <ImageBrush ImageSource="/Labshell;component/images/ic-good.png"/>
+                            </TextBlock.Background>
+                        </TextBlock>-->
                     </Grid>
                     <!--z触发器-->
                     <ControlTemplate.Triggers>

@@ -58,6 +58,7 @@ namespace Labshell
         {
             ConfigWindow configWindow = new ConfigWindow();
             configWindow.Show();
+            configWindow.Owner = this.Owner;
             this.Close();
         }
     }

@@ -59,10 +59,12 @@
     <Compile Include="AdminLogin.xaml.cs">
       <DependentUpon>AdminLogin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Command\OpenFileCommand.cs" />
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Lab.cs" />
+    <Compile Include="Model\ListenPath.cs" />
     <Compile Include="Model\Student.cs" />
     <Compile Include="View\ControlAttachProperty.cs" />
     <Compile Include="View\WaterMarkText.cs" />
@@ -118,7 +120,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resource\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -153,6 +154,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\admin-login-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\unfold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\openfolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ic-add-apth.png" />
+    <Resource Include="images\ic-remoce-path.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

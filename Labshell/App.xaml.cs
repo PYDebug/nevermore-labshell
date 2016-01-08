@@ -13,5 +13,6 @@ namespace Labshell
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
