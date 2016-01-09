@@ -64,7 +64,11 @@
             <Button x:Name="exit" Content="退出" HorizontalAlignment="Left" Margin="385,269,0,0" VerticalAlignment="Top" Width="75" Height="25" Style="{DynamicResource MiddleButton}" Foreground="White" Click="ExitButton_Click"/>
             <Button x:Name="save" Content="保存" HorizontalAlignment="Left" Margin="473,269,0,0" VerticalAlignment="Top" Width="75" Height="25" Style="{DynamicResource MiddleButton}" Foreground="White"/>
             <Button x:Name="addPath" Content="Button" HorizontalAlignment="Left" Height="15" Margin="532,144,0,0" VerticalAlignment="Top" Width="16" Style="{DynamicResource AddButton}" Cursor="Hand"/>
-            <Button x:Name="openFile" Content="Button" HorizontalAlignment="Left" Margin="527,110,0,0" VerticalAlignment="Top" Width="21" Height="19" Style="{DynamicResource OpenFileButton}"/>
+            <Button x:Name="openFile" Content="Button" HorizontalAlignment="Left" Margin="527,110,0,0" VerticalAlignment="Top" Width="21" Height="19" Style="{DynamicResource OpenFileButton}" Click="OpenFile_Click"/>
         </Grid>
+        <Label x:Name="videoInfo" Content="摄像头正常" HorizontalAlignment="Left" Margin="630,397,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="videoState" HorizontalAlignment="Left" Height="15" Margin="614,402,0,0" VerticalAlignment="Top" Width="16" Source="images/ic-good.png"/>
+        <Label x:Name="netInfo" Content="网络正常" HorizontalAlignment="Left" Margin="546,397,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="netState" HorizontalAlignment="Left" Height="15" Margin="530,402,0,0" VerticalAlignment="Top" Width="16" Source="images/ic-good.png"/>
     </Grid>
 </Window>

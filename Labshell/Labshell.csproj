@@ -66,6 +66,10 @@
     <Compile Include="Model\Lab.cs" />
     <Compile Include="Model\ListenPath.cs" />
     <Compile Include="Model\Student.cs" />
+    <Compile Include="Model\UploadFile.cs" />
+    <Compile Include="ProcessingWindow.xaml.cs">
+      <DependentUpon>ProcessingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ControlAttachProperty.cs" />
     <Compile Include="View\WaterMarkText.cs" />
     <Page Include="AdminLogin.xaml">
@@ -88,6 +92,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProcessingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resource\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +172,18 @@
   <ItemGroup>
     <Resource Include="images\ic-add-apth.png" />
     <Resource Include="images\ic-remoce-path.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ic-processing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\alert-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ic-info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ic-upload.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

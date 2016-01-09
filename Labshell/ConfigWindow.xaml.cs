@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Labshell.Model;
 using Labshell.Command;
+using Microsoft.Win32;
 
 namespace Labshell
 {
@@ -82,6 +83,20 @@ namespace Labshell
         {
             this.Close();
             this.Owner.Show();
+        }
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            string filter = "启动文件(*.exe)|*.exe";
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.Title = "请选择启动项";
+            fd.Filter = filter;
+            fd.FileName = this.pathText.Text.Trim();
+
+            if (fd.ShowDialog() == true)
+            {
+                this.pathText.Text = fd.FileName;
+            }
         }
 
         

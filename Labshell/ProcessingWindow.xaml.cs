@@ -10,32 +10,31 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Labshell.Model;
 
 namespace Labshell
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// ProcessingWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProcessingWindow : Window
     {
-        private List<Student> students = new List<Student>();
+        private List<UploadFile> upfiles = new List<UploadFile>();
 
-        public MainWindow()
+        public ProcessingWindow()
         {
             InitializeComponent();
             initData();
         }
 
-        private void initData() 
+        private void initData()
         {
-            Student student1 = new Student() { Number = "1435846", Name = "潘岩"};
-            students.Add(student1);
-            Student student2 = new Student() { Number = "091116", Name = "郭意亮" };
-            students.Add(student2);
-            this.studentList.ItemsSource = students;
+            UploadFile up1 = new UploadFile() { FileName = "test1.txt", FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS };
+            upfiles.Add(up1);
+            UploadFile up2 = new UploadFile() { FileName = "test2.png", FileType = UploadFile.PHOTO, Status = UploadFile.WAIT };
+            upfiles.Add(up2);
+            this.fileList.ItemsSource = upfiles;
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -56,26 +55,15 @@ namespace Labshell
             }
         }
 
-        private void AdminLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            AdminLogin adminLogin = new AdminLogin();
-            adminLogin.Show();
-            adminLogin.Owner = this;
-            this.Hide();
-        }
-
-        private void RemoveLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void OpenLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Label label = sender as Label;
             MessageBox.Show(label.Tag.ToString());
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            ProcessingWindow processingWindow = new ProcessingWindow();
-            processingWindow.Show();
-            processingWindow.Owner = this;
-            this.Hide();
+            Application.Current.Shutdown();
         }
     }
 }
