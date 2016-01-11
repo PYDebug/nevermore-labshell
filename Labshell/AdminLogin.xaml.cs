@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Labshell.Factory;
+using Labshell.Result;
+using Labshell.Model;
+using Labshell.Service;
 
 namespace Labshell
 {
@@ -19,6 +23,8 @@ namespace Labshell
     /// </summary>
     public partial class AdminLogin : Window
     {
+        private AccountFactory af = new AccountFactory();
+
         public AdminLogin()
         {
             InitializeComponent();
@@ -56,10 +62,26 @@ namespace Labshell
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-            ConfigWindow configWindow = new ConfigWindow();
-            configWindow.Show();
-            configWindow.Owner = this.Owner;
-            this.Close();
+            LoginResult lr = af.Login(this.number.Text, this.password.Password);
+            if (lr != null)
+            {
+                if (lr.code == "200")
+                {
+                    CacheService.SetAdminToken(lr.token);
+                    ConfigWindow configWindow = new ConfigWindow();
+                    configWindow.Show();
+                    configWindow.Owner = this.Owner;
+                    this.Close();
+                }
+                else
+                {
+                    LSMessageBox.Show("登录错误", lr.message);
+                }
+            }
+            else
+            {
+                LSMessageBox.Show("网络错误","网络异常");
+            }
         }
     }
 }

@@ -35,19 +35,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Controls">
-      <HintPath>..\..\..\..\..\Desktop\Aforge\AForge.Controls.dll</HintPath>
+    <Reference Include="AForge.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Controls.2.2.5\lib\AForge.Controls.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="AForge.Video">
-      <HintPath>..\..\..\..\..\Desktop\Aforge\AForge.Video.dll</HintPath>
+    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="AForge.Video.DirectShow">
-      <HintPath>..\..\..\..\..\Desktop\Aforge\AForge.Video.DirectShow.dll</HintPath>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,17 +79,30 @@
     <Compile Include="AdminLogin.xaml.cs">
       <DependentUpon>AdminLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Command\OpenFileCommand.cs" />
     <Compile Include="ConfigWindow.xaml.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Factory\AccountFactory.cs" />
+    <Compile Include="Factory\LabFactory.cs" />
+    <Compile Include="Factory\MachineFactory.cs" />
+    <Compile Include="JsonForm\Machine.cs" />
+    <Compile Include="LSMessageBox.xaml.cs">
+      <DependentUpon>LSMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Lab.cs" />
+    <Compile Include="Result\GeneralResult.cs" />
+    <Compile Include="Result\LabResult.cs" />
     <Compile Include="Model\ListenPath.cs" />
+    <Compile Include="Result\LoginResult.cs" />
     <Compile Include="Model\Student.cs" />
     <Compile Include="Model\UploadFile.cs" />
     <Compile Include="ProcessingWindow.xaml.cs">
       <DependentUpon>ProcessingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Result\MachineResult.cs" />
+    <Compile Include="Service\CacheService.cs" />
+    <Compile Include="Util\MD5Tool.cs" />
+    <Compile Include="Util\ServerURL.cs" />
     <Compile Include="View\ControlAttachProperty.cs" />
     <Compile Include="View\WaterMarkText.cs" />
     <Page Include="AdminLogin.xaml">
@@ -89,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LSMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,6 +160,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

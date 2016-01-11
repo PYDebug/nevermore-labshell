@@ -12,7 +12,7 @@ namespace Labshell.Model
 
         public String Name { get; set; }
 
-        public String ExperimentName { get; set; }
+        public String Number { get; set; }
 
         public int MachineNumber { get; set; }
 

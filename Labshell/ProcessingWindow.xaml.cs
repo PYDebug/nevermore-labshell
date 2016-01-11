@@ -84,8 +84,6 @@ namespace Labshell
             {   // 默认设备  
                 device = new VideoCaptureDevice(videoDevices[0].MonikerString);
                 device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
-                device.DesiredFrameSize = new System.Drawing.Size(160, 120);
-                device.DesiredFrameRate = 1;
                 device.Start();
             }
         }
