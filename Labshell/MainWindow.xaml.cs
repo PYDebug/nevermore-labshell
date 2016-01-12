@@ -16,6 +16,7 @@ using Labshell.Model;
 using Labshell.Factory;
 using Labshell.Result;
 using Labshell.Service;
+using Labshell.Util;
 
 namespace Labshell
 {
@@ -28,6 +29,8 @@ namespace Labshell
 
         private AccountFactory af = new AccountFactory();
 
+        private RealTimeCheck rtc = new RealTimeCheck();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +40,9 @@ namespace Labshell
         private void initData() 
         {
             this.studentList.ItemsSource = students;
+            rtc.SetLabel(this.netInfo);
+            rtc.SetImage(this.netState);
+            rtc.Start();
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -105,14 +111,21 @@ namespace Labshell
             {
                 if (lr.code == "200")
                 {
-                    Student student = new Student() { Number = lr.data.account, Name = lr.data.name };
-                    students.Add(student);
-                    this.studentList.Items.Refresh();
-                    CacheService.AddStuList(student);
+                    if (AccountUtil.IsRole(AccountUtil.STUDENT, lr.data.roles))
+                    {
+                        Student student = new Student() { Number = lr.data.account, Name = lr.data.name };
+                        students.Add(student);
+                        this.studentList.Items.Refresh();
+                        CacheService.AddStuList(student);
+                    }
+                    else
+                    {
+                        LSMessageBox.Show("登录异常","当前角色不是学生");
+                    }
                 }
-                else if (lr.code == "801")
+                else
                 {
-                    LSMessageBox.Show("登录错误", "用户名或密码错误");
+                    LSMessageBox.Show("登录错误", lr.message);
                 }
             }
             else
@@ -120,5 +133,6 @@ namespace Labshell
                 LSMessageBox.Show("网络错误", "网络异常");
             }
         }
+
     }
 }

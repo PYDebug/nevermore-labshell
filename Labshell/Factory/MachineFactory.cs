@@ -14,7 +14,7 @@ namespace Labshell.Factory
 {
     class MachineFactory
     {
-        public GeneralResult AddMachine(String mac, int labId, String launchPath, List<String> listenPath)
+        public MachineResult AddMachine(String mac, int labId, String launchPath, List<String> listenPath)
         {
             RestClient client = new RestClient(ServerURL.URL);
             RestRequest request = new RestRequest("/manage/machine", Method.POST);
@@ -26,7 +26,32 @@ namespace Labshell.Factory
                 launchPath = launchPath,
                 listenPath = listenPath
             });
-            var response = client.Execute<GeneralResult>(request);
+            var response = client.Execute<MachineResult>(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public MachineResult UpdateMachine(int id, String mac, int labId, String launchPath, List<String> listenPath)
+        {
+            RestClient client = new RestClient(ServerURL.URL);
+            RestRequest request = new RestRequest("/manage/machine/{id}", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("x-auth-token", CacheService.GetAdminToken());
+            request.AddUrlSegment("id", id+"");
+            request.AddBody(new Machine
+            {
+                macAddress = mac,
+                labId = labId,
+                launchPath = launchPath,
+                listenPath = listenPath
+            });
+            var response = client.Execute<MachineResult>(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 return response.Data;

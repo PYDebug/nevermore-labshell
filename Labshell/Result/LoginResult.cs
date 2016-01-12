@@ -21,6 +21,15 @@ namespace Labshell.Result
             public String account { get; set; }
 
             public String name { get; set; }
+
+            public List<RoleItem> roles { get; set; }
+        }
+
+        public class RoleItem
+        {
+            public int id { get; set; }
+
+            public Role name { get; set; }
         }
     }
 }

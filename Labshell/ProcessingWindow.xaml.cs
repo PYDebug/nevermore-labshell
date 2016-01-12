@@ -16,6 +16,7 @@ using AForge.Video.DirectShow;
 using System.ComponentModel;
 using AForge.Video;
 using System.Drawing;
+using Labshell.Service;
 
 namespace Labshell
 {
@@ -26,6 +27,8 @@ namespace Labshell
     {
         private List<UploadFile> upfiles = new List<UploadFile>();
         private VideoCaptureDevice device;
+
+        private RealTimeCheck rtc = new RealTimeCheck();
 
         public ProcessingWindow()
         {
@@ -41,6 +44,10 @@ namespace Labshell
             UploadFile up2 = new UploadFile() { FileName = "test2.png", FileType = UploadFile.PHOTO, Status = UploadFile.WAIT };
             upfiles.Add(up2);
             this.fileList.ItemsSource = upfiles;
+
+            rtc.SetLabel(this.netInfo);
+            rtc.SetImage(this.netState);
+            rtc.Start();
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)

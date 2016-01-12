@@ -90,6 +90,7 @@
       <DependentUpon>LSMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Lab.cs" />
+    <Compile Include="Result\Role.cs" />
     <Compile Include="Result\GeneralResult.cs" />
     <Compile Include="Result\LabResult.cs" />
     <Compile Include="Model\ListenPath.cs" />
@@ -101,6 +102,9 @@
     </Compile>
     <Compile Include="Result\MachineResult.cs" />
     <Compile Include="Service\CacheService.cs" />
+    <Compile Include="Service\RealTimeCheck.cs" />
+    <Compile Include="Util\AccountUtil.cs" />
+    <Compile Include="Util\MachineUtil.cs" />
     <Compile Include="Util\MD5Tool.cs" />
     <Compile Include="Util\ServerURL.cs" />
     <Compile Include="View\ControlAttachProperty.cs" />

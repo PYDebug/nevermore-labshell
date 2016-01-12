@@ -15,6 +15,7 @@ using Labshell.Factory;
 using Labshell.Result;
 using Labshell.Model;
 using Labshell.Service;
+using Labshell.Util;
 
 namespace Labshell
 {
@@ -25,6 +26,8 @@ namespace Labshell
     {
         private AccountFactory af = new AccountFactory();
 
+        private RealTimeCheck rtc = new RealTimeCheck();
+
         public AdminLogin()
         {
             InitializeComponent();
@@ -33,7 +36,9 @@ namespace Labshell
 
         private void initData()
         {
-            
+            rtc.SetLabel(this.netInfo);
+            rtc.SetImage(this.netState);
+            rtc.Start();
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -67,11 +72,18 @@ namespace Labshell
             {
                 if (lr.code == "200")
                 {
-                    CacheService.SetAdminToken(lr.token);
-                    ConfigWindow configWindow = new ConfigWindow();
-                    configWindow.Show();
-                    configWindow.Owner = this.Owner;
-                    this.Close();
+                    if (AccountUtil.IsRole(AccountUtil.ADMIN, lr.data.roles))
+                    {
+                        CacheService.SetAdminToken(lr.token);
+                        ConfigWindow configWindow = new ConfigWindow();
+                        configWindow.Show();
+                        configWindow.Owner = this.Owner;
+                        this.Close();
+                    }
+                    else
+                    {
+                        LSMessageBox.Show("登录异常","当前角色不是管理员");
+                    }
                 }
                 else
                 {

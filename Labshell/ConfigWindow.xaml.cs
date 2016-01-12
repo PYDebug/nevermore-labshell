@@ -15,6 +15,7 @@ using Labshell.Model;
 using Labshell.Factory;
 using Labshell.Service;
 using Labshell.Result;
+using Labshell.Util;
 
 namespace Labshell
 {
@@ -30,6 +31,8 @@ namespace Labshell
 
         private MachineFactory mf = new MachineFactory();
 
+        private RealTimeCheck rtc = new RealTimeCheck();
+
         public ConfigWindow()
         {
             InitializeComponent();
@@ -38,6 +41,10 @@ namespace Labshell
 
         private void initData()
         {
+            rtc.SetLabel(this.netInfo);
+            rtc.SetImage(this.netState);
+            rtc.Start();
+
             List<Lab> lablist = lf.AllLab();
             if (lablist != null)
             {
@@ -162,24 +169,75 @@ namespace Labshell
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            List<String> lpath = new List<String>();
-            foreach (ListenPath lp in paths)
+            if (CacheService.GetMachineId() == -1)
             {
-                lpath.Add(lp.Path);
-            }
-            GeneralResult gr = mf.AddMachine(CacheService.GetMac(), (int)this.labList.SelectedValue, this.pathText.Text.ToString(), lpath);
-            if (gr != null)
-            {
-                if (gr.code == "200")
+                List<String> lpath = new List<String>();
+                foreach (ListenPath lp in paths)
                 {
-                    LSMessageBox.Show("提示","配置成功");
-                    this.Close();
-                    this.Owner.Show();
+                    lpath.Add(lp.Path);
+                }
+                MachineResult mr = mf.AddMachine(MachineUtil.GetMac(), (int)this.labList.SelectedValue, this.pathText.Text.ToString(), lpath);
+                if (mr != null)
+                {
+                    if (mr.code == "200")
+                    {
+                        LSMessageBox.Show("提示", "配置成功");
+                        //CacheService.SetMachineId(mr.data.id);
+                        //CacheService.SetMac(mr.data.macAddress);
+                        //CacheService.SetLab(mr.data.labId);
+                        //CacheService.SetLaunchPath(mr.data.launchPath);
+                        //foreach (String p in mr.data.listenPath)
+                        //{
+                        //    CacheService.AddListenPath(new ListenPath { Path = p });
+                        //}
+                        CacheService.SetMachineConf(mr);
+                        this.Close();
+                        this.Owner.Show();
+                    }
+                    else
+                    {
+                        LSMessageBox.Show("配置异常",mr.message);
+                    }
+                }
+                else
+                {
+                    LSMessageBox.Show("网络错误", "网络异常");
                 }
             }
             else
             {
-                LSMessageBox.Show("网络错误","网络异常");
+                List<String> lpath = new List<String>();
+                foreach (ListenPath lp in paths)
+                {
+                    lpath.Add(lp.Path);
+                }
+                MachineResult mr = mf.UpdateMachine(CacheService.GetMachineId(), MachineUtil.GetMac(), (int)this.labList.SelectedValue, this.pathText.Text.ToString(), lpath);
+                if (mr != null)
+                {
+                    if (mr.code == "200")
+                    {
+                        LSMessageBox.Show("提示", "更新成功");
+                        //CacheService.SetMachineId(mr.data.id);
+                        //CacheService.SetMac(mr.data.macAddress);
+                        //CacheService.SetLab(mr.data.labId);
+                        //CacheService.SetLaunchPath(mr.data.launchPath);
+                        //foreach (String p in mr.data.listenPath)
+                        //{
+                        //    CacheService.AddListenPath(new ListenPath { Path = p });
+                        //}
+                        CacheService.SetMachineConf(mr);
+                        this.Close();
+                        this.Owner.Show();
+                    }
+                    else 
+                    {
+                        LSMessageBox.Show("配置异常", mr.message);
+                    }
+                }
+                else
+                {
+                    LSMessageBox.Show("网络错误", "网络异常");
+                }
             }
         }
 

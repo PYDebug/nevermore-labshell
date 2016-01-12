@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Labshell.Model;
 using System.Management;
+using Labshell.Result;
 
 namespace Labshell.Service
 {
@@ -14,6 +15,8 @@ namespace Labshell.Service
 
         private static Dictionary<String, Student> stuList = new Dictionary<String, Student>();
 
+        private static int machineId = -1;
+
         private static string mac;
 
         private static int labId = -1;
@@ -21,6 +24,29 @@ namespace Labshell.Service
         private static String launchPath;
 
         private static List<ListenPath> listenPath = new List<ListenPath>();
+
+        public static void SetMachineConf(MachineResult mr)
+        {
+            machineId = mr.data.id;
+            mac = mr.data.macAddress;
+            labId = mr.data.labId;
+            launchPath = mr.data.launchPath;
+            listenPath.Clear();
+            foreach (String p in mr.data.listenPath)
+            {
+                listenPath.Add(new ListenPath { Path = p });
+            }
+        }
+
+        public static void SetMachineId(int id)
+        {
+            machineId = id;
+        }
+
+        public static int GetMachineId()
+        {
+            return machineId;
+        }
 
         public static void SetAdminToken(String token)
         {
@@ -91,33 +117,7 @@ namespace Labshell.Service
 
         public static string GetMac()
         {
-            if (mac != null)
-            {
-                return mac;
-            }
-            else
-            {
-                string MoAddress = string.Empty;
-                try
-                {
-                    ManagementClass networkAdapter = new ManagementClass("Win32_NetworkAdapterConfiguration");
-                    ManagementObjectCollection adapterC = networkAdapter.GetInstances();
-                    foreach (ManagementObject m in adapterC)
-                    {
-                        if ((bool)m["IPEnabled"] == true)
-                        {
-                            MoAddress = m["MacAddress"].ToString().Trim();
-                            m.Dispose();
-                        }
-                    }
-                    mac = MoAddress;
-                    return mac;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
+            return mac;
         }
     }
 }
