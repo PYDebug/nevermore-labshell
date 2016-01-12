@@ -31,7 +31,7 @@
                 </Grid>
                 <Label Content="当前共6人组队" HorizontalAlignment="Left" Margin="39,105,0,0" VerticalAlignment="Top" Foreground="#FF979797" Padding="0,5,5,5"/>
                 <Image HorizontalAlignment="Left" Height="15" Margin="512,110,0,0" VerticalAlignment="Top" Width="21" Source="images/ic-upload.png"/>
-                <Button x:Name="uploadButton" Content="手动上传文件" HorizontalAlignment="Left" Height="25" Margin="535,105,0,0" VerticalAlignment="Top" Width="78" Style="{DynamicResource LinkButton}" Foreground="#FF00A1CC" Cursor="Hand"/>
+                <Button x:Name="uploadButton" Content="手动上传文件" HorizontalAlignment="Left" Height="25" Margin="535,105,0,0" VerticalAlignment="Top" Width="78" Style="{DynamicResource LinkButton}" Foreground="#FF00A1CC" Cursor="Hand" Click="UploadButton_Click"/>
                 <Label Content="文件名" HorizontalAlignment="Left" Height="23" Margin="39,132,0,0" VerticalAlignment="Top" Width="260" HorizontalContentAlignment="Center" BorderThickness="1,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
                 <Label Content="类型" HorizontalAlignment="Left" Height="23" Margin="299,132,0,0" VerticalAlignment="Top" Width="115" HorizontalContentAlignment="Center" BorderThickness="0,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
                 <Label Content="状态" HorizontalAlignment="Left" Height="23" Margin="414,132,0,0" VerticalAlignment="Top" Width="97" HorizontalContentAlignment="Center" BorderThickness="0,1,1,0" BorderBrush="#FF979797" FontSize="11"/>
@@ -43,7 +43,7 @@
                                 <Label Content="{Binding FileName}" Padding="0,0,10,0" Height="23" Width="260" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
                                 <Label Content="{Binding FileType}" Padding="0,0,15,0" Height="23" Width="115" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
                                 <Label Content="{Binding Status}" Padding="0,0,15,0" Height="23" Width="97" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
-                                <Label Content="打开文件夹" Tag="{Binding FileName}" Padding="0,0,15,0" Height="23" Width="101" HorizontalContentAlignment="Center" FontSize="11" Foreground="#FF00A1CC" VerticalContentAlignment="Center" MouseDown="OpenLabel_MouseDown" Cursor="Hand"/>
+                                <Label Content="打开文件夹" Tag="{Binding FilePath}" Padding="0,0,15,0" Height="23" Width="101" HorizontalContentAlignment="Center" FontSize="11" Foreground="#FF00A1CC" VerticalContentAlignment="Center" MouseDown="OpenLabel_MouseDown" Cursor="Hand"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

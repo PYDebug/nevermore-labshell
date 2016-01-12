@@ -11,5 +11,7 @@ namespace Labshell.Model
         public String Number { set; get; }
 
         public String Name { set; get; }
+
+        public String Token { get; set; }
     }
 }

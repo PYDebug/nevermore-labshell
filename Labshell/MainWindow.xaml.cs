@@ -113,10 +113,18 @@ namespace Labshell
                 {
                     if (AccountUtil.IsRole(AccountUtil.STUDENT, lr.data.roles))
                     {
-                        Student student = new Student() { Number = lr.data.account, Name = lr.data.name };
-                        students.Add(student);
-                        this.studentList.Items.Refresh();
-                        CacheService.AddStuList(student);
+                        Student student = new Student() { Number = lr.data.account, Name = lr.data.name, Token=lr.token};
+                        try
+                        {
+                            CacheService.AddStuList(student);
+                            students.Add(student);
+                            this.studentList.Items.Refresh();
+                        }
+                        catch (ArgumentException)
+                        {
+                            LSMessageBox.Show("登陆异常","已经存在该学生");
+                        }
+                        
                     }
                     else
                     {

@@ -68,6 +68,16 @@ namespace Labshell.Service
             stuList.Remove(stu.Number);
         }
 
+        public static List<Student> GetStudentList()
+        {
+            List<Student> students = new List<Student>();
+            foreach (Student s in stuList.Values)
+            {
+                students.Add(s);
+            }
+            return students;
+        }
+
         public static void AddListenPath(ListenPath lp)
         {
             listenPath.Add(lp);

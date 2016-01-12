@@ -16,11 +16,17 @@ namespace Labshell.Model
 
         public static String WAIT = "未上传";
 
+        public static String FAIL = "上传失败";
+
         public String FileName { get; set; }
 
         public String FileType { get; set; }
 
         public String Status { get; set; }
+
+        public String FilePath { get; set; }
+
+        public int Id { get; set; }
 
     }
 }

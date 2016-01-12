@@ -182,14 +182,6 @@ namespace Labshell
                     if (mr.code == "200")
                     {
                         LSMessageBox.Show("提示", "配置成功");
-                        //CacheService.SetMachineId(mr.data.id);
-                        //CacheService.SetMac(mr.data.macAddress);
-                        //CacheService.SetLab(mr.data.labId);
-                        //CacheService.SetLaunchPath(mr.data.launchPath);
-                        //foreach (String p in mr.data.listenPath)
-                        //{
-                        //    CacheService.AddListenPath(new ListenPath { Path = p });
-                        //}
                         CacheService.SetMachineConf(mr);
                         this.Close();
                         this.Owner.Show();
@@ -217,14 +209,6 @@ namespace Labshell
                     if (mr.code == "200")
                     {
                         LSMessageBox.Show("提示", "更新成功");
-                        //CacheService.SetMachineId(mr.data.id);
-                        //CacheService.SetMac(mr.data.macAddress);
-                        //CacheService.SetLab(mr.data.labId);
-                        //CacheService.SetLaunchPath(mr.data.launchPath);
-                        //foreach (String p in mr.data.listenPath)
-                        //{
-                        //    CacheService.AddListenPath(new ListenPath { Path = p });
-                        //}
                         CacheService.SetMachineConf(mr);
                         this.Close();
                         this.Owner.Show();

@@ -85,11 +85,13 @@
     <Compile Include="Factory\AccountFactory.cs" />
     <Compile Include="Factory\LabFactory.cs" />
     <Compile Include="Factory\MachineFactory.cs" />
+    <Compile Include="Factory\RecordFactory.cs" />
     <Compile Include="JsonForm\Machine.cs" />
     <Compile Include="LSMessageBox.xaml.cs">
       <DependentUpon>LSMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Lab.cs" />
+    <Compile Include="Result\FileResult.cs" />
     <Compile Include="Result\Role.cs" />
     <Compile Include="Result\GeneralResult.cs" />
     <Compile Include="Result\LabResult.cs" />
@@ -102,6 +104,8 @@
     </Compile>
     <Compile Include="Result\MachineResult.cs" />
     <Compile Include="Service\CacheService.cs" />
+    <Compile Include="Service\CaptureService.cs" />
+    <Compile Include="Service\ListenService.cs" />
     <Compile Include="Service\RealTimeCheck.cs" />
     <Compile Include="Util\AccountUtil.cs" />
     <Compile Include="Util\MachineUtil.cs" />

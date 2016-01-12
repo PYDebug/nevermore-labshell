@@ -17,6 +17,8 @@ using System.ComponentModel;
 using AForge.Video;
 using System.Drawing;
 using Labshell.Service;
+using Labshell.Factory;
+using Labshell.Result;
 
 namespace Labshell
 {
@@ -28,26 +30,30 @@ namespace Labshell
         private List<UploadFile> upfiles = new List<UploadFile>();
         private VideoCaptureDevice device;
 
+        private RecordFactory rf = new RecordFactory();
+
         private RealTimeCheck rtc = new RealTimeCheck();
+
+        private CaptureService cs = new CaptureService();
 
         public ProcessingWindow()
         {
             InitializeComponent();
+            initVideo();
             initData();
-            this.Loaded += new RoutedEventHandler(Window_Loaded);
         }
 
         private void initData()
         {
-            UploadFile up1 = new UploadFile() { FileName = "test1.txt", FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS };
-            upfiles.Add(up1);
-            UploadFile up2 = new UploadFile() { FileName = "test2.png", FileType = UploadFile.PHOTO, Status = UploadFile.WAIT };
-            upfiles.Add(up2);
             this.fileList.ItemsSource = upfiles;
 
             rtc.SetLabel(this.netInfo);
             rtc.SetImage(this.netState);
             rtc.Start();
+
+            cs.SetDevice(this.device);
+            cs.SetSavePath(System.Environment.CurrentDirectory + "/photo");
+            cs.Start();
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -73,7 +79,8 @@ namespace Labshell
         private void OpenLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Label label = sender as Label;
-            MessageBox.Show(label.Tag.ToString());
+            String doc = label.Tag.ToString().Substring(0, label.Tag.ToString().Length - label.Tag.ToString().Split('\\')[label.Tag.ToString().Split('\\').Length-1].Length);
+            System.Diagnostics.Process.Start("explorer.exe ", doc);
         }
 
         private void ExitButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -83,7 +90,7 @@ namespace Labshell
             Application.Current.Shutdown();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void initVideo()
         {
             // 设定初始视频设备  
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -102,6 +109,50 @@ namespace Labshell
             GC.Collect();
 
             picture.Image = bitmap;
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                //TODO: 测试，待修改
+                String token = "";
+                List<Student> students = CacheService.GetStudentList();
+                if (students.Count != 0)
+                {
+                    token = students[0].Token;
+                }
+                //
+                FileResult fr = rf.UploadFile(openFileDialog.FileName, token);
+
+                //获取文件名字
+                String file_name = openFileDialog.FileName.Split('\\')[openFileDialog.FileName.Split('\\').Length-1];
+
+                if (fr != null)
+                {
+                    if (fr.code == "200")
+                    {
+                        UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = openFileDialog.FileName, Id = fr.data.id };
+                        upfiles.Add(up);
+                        fileList.Items.Refresh();
+                    }
+                    else
+                    {
+                        LSMessageBox.Show("上传文件错误", fr.message);
+                        UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = openFileDialog.FileName, Id = -1 };
+                        upfiles.Add(up);
+                        fileList.Items.Refresh();
+                    }
+                }
+                else
+                {
+                    LSMessageBox.Show("网络错误","网络异常");
+                    UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = openFileDialog.FileName, Id = -1 };
+                    upfiles.Add(up);
+                    fileList.Items.Refresh();
+                }
+            }
         }
     }
 }
