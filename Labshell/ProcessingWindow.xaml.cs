@@ -59,6 +59,8 @@ namespace Labshell
 
             ls.SetListBox(this.fileList);
             ls.SetPaths(CacheService.GetListenPath());
+
+            this.groupLabel.Content = "当前共"+CacheService.GetStudentList().Count+"人组队";
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)

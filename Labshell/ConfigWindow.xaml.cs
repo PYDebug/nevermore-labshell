@@ -61,10 +61,10 @@ namespace Labshell
 
             this.pathList.ItemsSource = paths;
 
-            if (CacheService.GetLab() != -1)
+            if (CacheService.GetLab() != null)
             {
                 int labindex = -1;
-                int labid = CacheService.GetLab();
+                int labid = CacheService.GetLab().id;
                 foreach (Lab lab in labs)
                 {
                     labindex++;

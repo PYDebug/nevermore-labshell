@@ -14,8 +14,6 @@ namespace Labshell.Service
         //登录信息
         private static String admin_token;
 
-        private static String stu_token;
-
         private static Dictionary<String, Student> stuList = new Dictionary<String, Student>();
 
         private static DateTime loginTime;
@@ -25,7 +23,9 @@ namespace Labshell.Service
 
         private static string mac;
 
-        private static int labId = -1;
+        private static MachineResult.Lab lab;
+
+        private static String labName;
 
         private static String launchPath;
 
@@ -35,7 +35,7 @@ namespace Labshell.Service
         {
             machineId = mr.data.id;
             mac = mr.data.macAddress;
-            labId = mr.data.labId;
+            lab = mr.data.lab;
             launchPath = mr.data.launchPath;
             listenPath.Clear();
             foreach (String p in mr.data.listenPath)
@@ -84,6 +84,11 @@ namespace Labshell.Service
             return students;
         }
 
+        public static void ClearStudentList()
+        {
+            stuList.Clear();
+        }
+
         public static void AddListenPath(ListenPath lp)
         {
             listenPath.Add(lp);
@@ -116,14 +121,14 @@ namespace Labshell.Service
             return launchPath;
         }
 
-        public static void SetLab(int id)
+        public static void SetLab(MachineResult.Lab l)
         {
-            labId = id;
+            lab = l;
         }
 
-        public static int GetLab()
+        public static MachineResult.Lab GetLab()
         {
-            return labId;
+            return lab;
         }
 
         public static void SetMac(String m)
@@ -146,14 +151,23 @@ namespace Labshell.Service
             return loginTime;
         }
 
-        public static void SetStuToken(String token)
-        {
-            stu_token = token;
-        }
-
         public static String GetStuToken()
         {
-            return stu_token;
+            foreach (Student s in stuList.Values)
+            {
+                return s.Token;
+            }
+            return null;
+        }
+
+        public static String GetLabName()
+        {
+            return labName;
+        }
+
+        public static void SetLabName(String name)
+        {
+            labName = name;
         }
     }
 }

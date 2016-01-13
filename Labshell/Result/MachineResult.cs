@@ -20,13 +20,20 @@ namespace Labshell.Result
         {
             public int id { get; set; }
 
-            public int labId { get; set; }
+            public Lab lab { get; set; }
 
             public String launchPath { get; set; }
 
             public String macAddress { get; set; }
 
             public List<String> listenPath { get; set; }
+        }
+
+        public class Lab
+        {
+            public int id { get; set; }
+
+            public String name { get; set; }
         }
     }
 }

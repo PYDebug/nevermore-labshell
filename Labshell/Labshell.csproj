@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="Model\Lab.cs" />
     <Compile Include="Result\FileResult.cs" />
+    <Compile Include="Result\ReservationResult.cs" />
     <Compile Include="Result\Role.cs" />
     <Compile Include="Result\GeneralResult.cs" />
     <Compile Include="Result\LabResult.cs" />

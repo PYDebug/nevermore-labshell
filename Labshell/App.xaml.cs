@@ -29,14 +29,6 @@ namespace Labshell
                 {
                     if (mr.data != null)
                     {
-                        //CacheService.SetMachineId(mr.data.id);
-                        //CacheService.SetMac(mr.data.macAddress);
-                        //CacheService.SetLab(mr.data.labId);
-                        //CacheService.SetLaunchPath(mr.data.launchPath);
-                        //foreach (String p in mr.data.listenPath)
-                        //{
-                        //    CacheService.AddListenPath(new ListenPath { Path = p });
-                        //}
                         CacheService.SetMachineConf(mr);
                     }
                 }
