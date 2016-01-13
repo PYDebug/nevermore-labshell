@@ -29,6 +29,8 @@ namespace Labshell
 
         private AccountFactory af = new AccountFactory();
 
+        private ReservationFactory rf = new ReservationFactory();
+
         private RealTimeCheck rtc = new RealTimeCheck();
 
         public MainWindow()
@@ -119,6 +121,7 @@ namespace Labshell
                             CacheService.AddStuList(student);
                             students.Add(student);
                             this.studentList.Items.Refresh();
+                            CacheService.SetStuToken(student.Token);
                         }
                         catch (ArgumentException)
                         {

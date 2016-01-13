@@ -86,6 +86,7 @@
     <Compile Include="Factory\LabFactory.cs" />
     <Compile Include="Factory\MachineFactory.cs" />
     <Compile Include="Factory\RecordFactory.cs" />
+    <Compile Include="Factory\ReservationFactory.cs" />
     <Compile Include="JsonForm\Machine.cs" />
     <Compile Include="LSMessageBox.xaml.cs">
       <DependentUpon>LSMessageBox.xaml</DependentUpon>

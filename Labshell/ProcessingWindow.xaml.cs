@@ -36,6 +36,8 @@ namespace Labshell
 
         private CaptureService cs = new CaptureService();
 
+        private ListenService ls = new ListenService();
+
         public ProcessingWindow()
         {
             InitializeComponent();
@@ -54,6 +56,9 @@ namespace Labshell
             cs.SetDevice(this.device);
             cs.SetSavePath(System.Environment.CurrentDirectory + "/photo");
             cs.Start();
+
+            ls.SetListBox(this.fileList);
+            ls.SetPaths(CacheService.GetListenPath());
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -116,14 +121,8 @@ namespace Labshell
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                //TODO: 测试，待修改
-                String token = "";
-                List<Student> students = CacheService.GetStudentList();
-                if (students.Count != 0)
-                {
-                    token = students[0].Token;
-                }
-                //
+                String token = CacheService.GetStuToken();
+                
                 FileResult fr = rf.UploadFile(openFileDialog.FileName, token);
 
                 //获取文件名字

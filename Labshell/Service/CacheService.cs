@@ -11,10 +11,16 @@ namespace Labshell.Service
 {
     class CacheService
     {
+        //登录信息
         private static String admin_token;
+
+        private static String stu_token;
 
         private static Dictionary<String, Student> stuList = new Dictionary<String, Student>();
 
+        private static DateTime loginTime;
+
+        //机器配置信息
         private static int machineId = -1;
 
         private static string mac;
@@ -128,6 +134,26 @@ namespace Labshell.Service
         public static string GetMac()
         {
             return mac;
+        }
+
+        public static void SetLoginTime(DateTime dt)
+        {
+            loginTime = dt;
+        }
+
+        public static DateTime GetLoginTime()
+        {
+            return loginTime;
+        }
+
+        public static void SetStuToken(String token)
+        {
+            stu_token = token;
+        }
+
+        public static String GetStuToken()
+        {
+            return stu_token;
         }
     }
 }
