@@ -45,14 +45,6 @@ namespace Labshell
             rtc.SetLabel(this.netInfo);
             rtc.SetImage(this.netState);
             rtc.Start();
-            if (CacheService.GetLab() != null)
-            {
-                this.lab.Content = CacheService.GetLab().name;
-            }
-            else
-            {
-                this.lab.Content = "未配置";
-            }
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -75,7 +67,7 @@ namespace Labshell
 
         private void AdminLabel_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (CacheService.GetAdminToken() == null)
+            if (CacheService.Instance.AdminToken == null)
             {
                 AdminLogin adminLogin = new AdminLogin();
                 adminLogin.Show();
@@ -99,7 +91,7 @@ namespace Labshell
                 if (student.Number == label.Tag.ToString())
                 {
                     this.students.Remove(student);
-                    CacheService.DeleteStuList(student);
+                    CacheService.Instance.DeleteStuList(student);
                     break;
                 }
             }
@@ -124,12 +116,12 @@ namespace Labshell
                     if (AccountUtil.IsRole(AccountUtil.STUDENT, lr.data.roles))
                     {
                         Student student = new Student() { Number = lr.data.account, Name = lr.data.name, Token=lr.token};
-                        ReservationResult rr = rf.GetValidity(CacheService.GetLab().id, student.Token);
+                        ReservationResult rr = rf.GetValidity(CacheService.Instance.Lab.id, student.Token);
                         if (rr.code == "200")
                         {
                             try
                             {
-                                CacheService.AddStuList(student);
+                                CacheService.Instance.AddStuList(student);
                                 students.Add(student);
                                 this.studentList.Items.Refresh();
                             }
@@ -167,7 +159,7 @@ namespace Labshell
         {
             this.students.Clear();
             this.studentList.Items.Refresh();
-            CacheService.ClearStudentList();
+            CacheService.Instance.ClearStudentList();
         }
 
     }

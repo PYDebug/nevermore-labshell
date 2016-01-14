@@ -74,7 +74,7 @@ namespace Labshell
                 {
                     if (AccountUtil.IsRole(AccountUtil.ADMIN, lr.data.roles))
                     {
-                        CacheService.SetAdminToken(lr.token);
+                        CacheService.Instance.AdminToken = lr.token;
                         ConfigWindow configWindow = new ConfigWindow();
                         configWindow.Show();
                         configWindow.Owner = this.Owner;

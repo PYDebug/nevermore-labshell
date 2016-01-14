@@ -6,32 +6,42 @@ using System.Threading.Tasks;
 using Labshell.Model;
 using System.Management;
 using Labshell.Result;
+using System.ComponentModel;
 
 namespace Labshell.Service
 {
-    class CacheService
+    class CacheService : INotifyPropertyChanged
     {
+        private static readonly CacheService instance = new CacheService();
+        private CacheService() { }
+
+        public static CacheService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
         //登录信息
-        private static String admin_token;
+        private String admin_token;
 
-        private static Dictionary<String, Student> stuList = new Dictionary<String, Student>();
+        private Dictionary<String, Student> stuList = new Dictionary<String, Student>();
 
-        private static DateTime loginTime;
+        private DateTime loginTime;
 
         //机器配置信息
-        private static int machineId = -1;
+        private int machineId = -1;
 
-        private static string mac;
+        private string mac;
 
-        private static MachineResult.Lab lab;
+        private MachineResult.Lab lab;
 
-        private static String labName;
+        private String launchPath;
 
-        private static String launchPath;
+        private List<ListenPath> listenPath = new List<ListenPath>();
 
-        private static List<ListenPath> listenPath = new List<ListenPath>();
-
-        public static void SetMachineConf(MachineResult mr)
+        public void SetMachineConf(MachineResult mr)
         {
             machineId = mr.data.id;
             mac = mr.data.macAddress;
@@ -42,39 +52,32 @@ namespace Labshell.Service
             {
                 listenPath.Add(new ListenPath { Path = p });
             }
+            NotifyPropertyChanged("Lab");
         }
 
-        public static void SetMachineId(int id)
+        public int MachineId 
         {
-            machineId = id;
+            get { return machineId; }
+            set { machineId = value; }
         }
 
-        public static int GetMachineId()
+        public String AdminToken
         {
-            return machineId;
+            get { return admin_token; }
+            set { admin_token = value; }
         }
 
-        public static void SetAdminToken(String token)
-        {
-            admin_token = token;
-        }
-
-        public static String GetAdminToken()
-        {
-            return admin_token;
-        }
-
-        public static void AddStuList(Student stu)
+        public void AddStuList(Student stu)
         {
             stuList.Add(stu.Number,stu);
         }
 
-        public static void DeleteStuList(Student stu)
+        public void DeleteStuList(Student stu)
         {
             stuList.Remove(stu.Number);
         }
 
-        public static List<Student> GetStudentList()
+        public List<Student> GetStudentList()
         {
             List<Student> students = new List<Student>();
             foreach (Student s in stuList.Values)
@@ -84,17 +87,17 @@ namespace Labshell.Service
             return students;
         }
 
-        public static void ClearStudentList()
+        public void ClearStudentList()
         {
             stuList.Clear();
         }
 
-        public static void AddListenPath(ListenPath lp)
+        public void AddListenPath(ListenPath lp)
         {
             listenPath.Add(lp);
         }
 
-        public static void RemoveListenPath(String path)
+        public void RemoveListenPath(String path)
         {
             foreach (ListenPath lp in listenPath)
             {
@@ -106,68 +109,56 @@ namespace Labshell.Service
             }
         }
 
-        public static List<ListenPath> GetListenPath()
+        public List<ListenPath> GetListenPath()
         {
             return listenPath;
         }
 
-        public static void SetLaunchPath(String lp)
+        public String LaunchPath
         {
-            launchPath = lp;
+            get { return launchPath; }
+            set { launchPath = value; }
         }
 
-        public static String GetLaunchPath()
+        public MachineResult.Lab Lab
         {
-            return launchPath;
+            get { return lab; }
+            set 
+            { 
+                lab = value;
+                NotifyPropertyChanged("Lab");
+            }
         }
 
-        public static void SetLab(MachineResult.Lab l)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
         {
-            lab = l;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
-        public static MachineResult.Lab GetLab()
+        public String Mac
         {
-            return lab;
+            get { return mac; }
+            set { mac = value; }
         }
 
-        public static void SetMac(String m)
+        public DateTime LoginTime
         {
-            mac = m;
+            get { return loginTime; }
+            set { loginTime = value; }
         }
 
-        public static string GetMac()
-        {
-            return mac;
-        }
-
-        public static void SetLoginTime(DateTime dt)
-        {
-            loginTime = dt;
-        }
-
-        public static DateTime GetLoginTime()
-        {
-            return loginTime;
-        }
-
-        public static String GetStuToken()
+        public String GetStuToken()
         {
             foreach (Student s in stuList.Values)
             {
                 return s.Token;
             }
             return null;
-        }
-
-        public static String GetLabName()
-        {
-            return labName;
-        }
-
-        public static void SetLabName(String name)
-        {
-            labName = name;
         }
     }
 }

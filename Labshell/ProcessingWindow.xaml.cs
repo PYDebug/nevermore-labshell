@@ -58,9 +58,9 @@ namespace Labshell
             cs.Start();
 
             ls.SetListBox(this.fileList);
-            ls.SetPaths(CacheService.GetListenPath());
+            ls.SetPaths(CacheService.Instance.GetListenPath());
 
-            this.groupLabel.Content = "当前共"+CacheService.GetStudentList().Count+"人组队";
+            this.groupLabel.Content = "当前共"+CacheService.Instance.GetStudentList().Count+"人组队";
         }
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -123,7 +123,7 @@ namespace Labshell
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                String token = CacheService.GetStuToken();
+                String token = CacheService.Instance.GetStuToken();
                 
                 FileResult fr = rf.UploadFile(openFileDialog.FileName, token);
 

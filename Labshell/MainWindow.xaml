@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Labshell.View"
+        xmlns:static="clr-namespace:Labshell.Service"
         Title="MainWindow" Height="517" Width="814" AllowsTransparency="True" WindowStyle="None" MouseDown="MouseDownEventHandle" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="images/bg.png"/>
@@ -24,8 +25,8 @@
             <Label Content="实验名称：" HorizontalAlignment="Left" Margin="41,102,0,0" VerticalAlignment="Top"/>
             <Label Content="实验室：" HorizontalAlignment="Left" Margin="41,127,0,0" VerticalAlignment="Top"/>
             <Label Content="赶快在下方加入一起做实验的小伙伴吧" HorizontalAlignment="Left" Margin="41,154,0,0" VerticalAlignment="Top" Width="240" FontSize="10" RenderTransformOrigin="0.5,0.5" Foreground="#FFF7A621"/>
-            <Label x:Name="experiment" Content="待定" HorizontalAlignment="Left" Margin="127,102,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lab" Content="" HorizontalAlignment="Left" Margin="127,127,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="experiment" Content="" HorizontalAlignment="Left" Margin="127,102,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="lab" HorizontalAlignment="Left" Margin="127,127,0,0" VerticalAlignment="Top" Content="{Binding Source={x:Static static:CacheService.Instance}, Path=Lab.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="实验组队情况" HorizontalAlignment="Left" Margin="367,99,0,0" VerticalAlignment="Top" FontSize="14"/>
             <Button x:Name="startButton" Content="开始实验" HorizontalAlignment="Left" Height="34" Margin="373,285,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LargeButton}" Foreground="White" Click="StartButton_Click"/>
             <Label x:Name="admin_Copy" Content="不登陆，直接实验" HorizontalAlignment="Left" Margin="503,326,0,0" VerticalAlignment="Top" Foreground="#FF00A1CC" Cursor="Hand"/>

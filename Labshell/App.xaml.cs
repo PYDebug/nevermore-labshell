@@ -29,7 +29,7 @@ namespace Labshell
                 {
                     if (mr.data != null)
                     {
-                        CacheService.SetMachineConf(mr);
+                        CacheService.Instance.SetMachineConf(mr);
                     }
                 }
                 else if(mr.code == "402")

@@ -19,7 +19,7 @@ namespace Labshell.Factory
             RestClient client = new RestClient(ServerURL.URL);
             RestRequest request = new RestRequest("/manage/machine", Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddHeader("x-auth-token", CacheService.GetAdminToken());
+            request.AddHeader("x-auth-token", CacheService.Instance.AdminToken);
             request.AddBody(new Machine {
                 macAddress = mac,
                 labId = labId,
@@ -42,7 +42,7 @@ namespace Labshell.Factory
             RestClient client = new RestClient(ServerURL.URL);
             RestRequest request = new RestRequest("/manage/machine/{id}", Method.PUT);
             request.RequestFormat = DataFormat.Json;
-            request.AddHeader("x-auth-token", CacheService.GetAdminToken());
+            request.AddHeader("x-auth-token", CacheService.Instance.AdminToken);
             request.AddUrlSegment("id", id+"");
             request.AddBody(new Machine
             {

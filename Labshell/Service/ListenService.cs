@@ -30,7 +30,7 @@ namespace Labshell.Service
         private void WatchCreated(object sender, FileSystemEventArgs e)
         {
             FileInfo fi = new FileInfo(e.FullPath);
-            FileResult fr = rf.UploadFile(fi.FullName, CacheService.GetStuToken());
+            FileResult fr = rf.UploadFile(fi.FullName, CacheService.Instance.GetStuToken());
             if (fr != null)
             {
                 if (fr.code == "200")

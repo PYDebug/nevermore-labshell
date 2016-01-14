@@ -61,10 +61,10 @@ namespace Labshell
 
             this.pathList.ItemsSource = paths;
 
-            if (CacheService.GetLab() != null)
+            if (CacheService.Instance.Lab != null)
             {
                 int labindex = -1;
-                int labid = CacheService.GetLab().id;
+                int labid = CacheService.Instance.Lab.id;
                 foreach (Lab lab in labs)
                 {
                     labindex++;
@@ -79,14 +79,14 @@ namespace Labshell
                 this.labList.SelectedIndex = labindex;
             }
 
-            if (CacheService.GetLaunchPath() != null)
+            if (CacheService.Instance.LaunchPath != null)
             {
-                this.pathText.Text = CacheService.GetLaunchPath();
+                this.pathText.Text = CacheService.Instance.LaunchPath;
             }
 
-            if (CacheService.GetListenPath().Count != 0)
+            if (CacheService.Instance.GetListenPath().Count != 0)
             {
-                foreach(ListenPath lp in CacheService.GetListenPath())
+                foreach(ListenPath lp in CacheService.Instance.GetListenPath())
                 {
                     this.paths.Add(lp);
                 }
@@ -169,7 +169,7 @@ namespace Labshell
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CacheService.GetMachineId() == -1)
+            if (CacheService.Instance.MachineId == -1)
             {
                 List<String> lpath = new List<String>();
                 foreach (ListenPath lp in paths)
@@ -182,7 +182,7 @@ namespace Labshell
                     if (mr.code == "200")
                     {
                         LSMessageBox.Show("提示", "配置成功");
-                        CacheService.SetMachineConf(mr);
+                        CacheService.Instance.SetMachineConf(mr);
                         this.Close();
                         this.Owner.Show();
                     }
@@ -203,13 +203,13 @@ namespace Labshell
                 {
                     lpath.Add(lp.Path);
                 }
-                MachineResult mr = mf.UpdateMachine(CacheService.GetMachineId(), MachineUtil.GetMac(), (int)this.labList.SelectedValue, this.pathText.Text.ToString(), lpath);
+                MachineResult mr = mf.UpdateMachine(CacheService.Instance.MachineId, MachineUtil.GetMac(), (int)this.labList.SelectedValue, this.pathText.Text.ToString(), lpath);
                 if (mr != null)
                 {
                     if (mr.code == "200")
                     {
                         LSMessageBox.Show("提示", "更新成功");
-                        CacheService.SetMachineConf(mr);
+                        CacheService.Instance.SetMachineConf(mr);
                         this.Close();
                         this.Owner.Show();
                     }
