@@ -14,7 +14,7 @@ namespace Labshell.Result
 
         public bool success { get; set; }
 
-        public Experiment data { get; set; }
+        public Reservation data { get; set; }
 
         public class Experiment
         {
@@ -23,6 +23,22 @@ namespace Labshell.Result
             public String name { get; set; }
 
             public String virtual_exp_link { get; set; }
+        }
+
+        public class Class
+        {
+            public int id { get; set; }
+
+            public String number { get; set; }
+
+            public String clazzroom { get; set; }
+        }
+
+        public class Reservation
+        {
+            public Experiment experiment { get; set; }
+
+            public Class clazz { get; set; }
         }
     }
 }

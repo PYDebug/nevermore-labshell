@@ -26,9 +26,11 @@ namespace Labshell.Service
         //登录信息
         private String admin_token;
 
-        private Dictionary<String, Student> stuList = new Dictionary<String, Student>();
+        private Dictionary<int, Student> stuList = new Dictionary<int, Student>();
 
         private DateTime loginTime;
+
+        private int experimentId = 0;
 
         //机器配置信息
         private int machineId = -1;
@@ -69,12 +71,12 @@ namespace Labshell.Service
 
         public void AddStuList(Student stu)
         {
-            stuList.Add(stu.Number,stu);
+            stuList.Add(stu.Id,stu);
         }
 
         public void DeleteStuList(Student stu)
         {
-            stuList.Remove(stu.Number);
+            stuList.Remove(stu.Id);
         }
 
         public List<Student> GetStudentList()
@@ -85,6 +87,11 @@ namespace Labshell.Service
                 students.Add(s);
             }
             return students;
+        }
+
+        public Student GetStudent(int id)
+        {
+            return stuList[id];
         }
 
         public void ClearStudentList()
@@ -159,6 +166,12 @@ namespace Labshell.Service
                 return s.Token;
             }
             return null;
+        }
+
+        public int ExperimentId 
+        {
+            get { return experimentId; }
+            set { experimentId = value; }
         }
     }
 }

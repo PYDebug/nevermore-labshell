@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Labshell.Result
 {
-    class RecordResult
+    public class RecordResult
     {
         public String code { get; set; }
 

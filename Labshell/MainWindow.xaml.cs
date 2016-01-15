@@ -37,7 +37,6 @@ namespace Labshell
         private RealTimeCheck rtc = new RealTimeCheck();
 
         //动态获取的数据
-        private int experimentId = 0;
 
         private String virtualExp;
 
@@ -108,27 +107,31 @@ namespace Labshell
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            List<int> ids = new List<int>();
             foreach(Student stu in CacheService.Instance.GetStudentList())
             {
-                RecordResult rr = rcf.GetRecord(10000, experimentId, stu.Id, CacheService.Instance.Lab.id, CacheService.Instance.MachineId, stu.Token);
-                if (rr != null)
+                ids.Add(stu.Id);
+            }
+            RecordResult rr = rcf.GetRecord(10000, CacheService.Instance.ExperimentId, ids, CacheService.Instance.Lab.id, CacheService.Instance.MachineId, CacheService.Instance.GetStuToken());
+            if (rr != null)
+            {
+                if (rr.code == "200")
                 {
-                    if (rr.code == "200")
+                    foreach(RecordResult.Record r in rr.data)
                     {
-                        stu.RecordId = rr.data[0].id;
-                        LSMessageBox.Show("test", rr.data[0].id+"");
-                    }
-                    else
-                    {
-                        LSMessageBox.Show("实验异常", rr.message);
-                        return;
+                        CacheService.Instance.GetStudent(r.studentId).RecordId = r.id;
                     }
                 }
-                else 
+                else
                 {
-                    LSMessageBox.Show("网络错误", "网络异常");
+                    LSMessageBox.Show("实验异常", rr.message);
                     return;
                 }
+            }
+            else 
+            {
+                LSMessageBox.Show("网络错误", "网络异常");
+                return;
             }
             ProcessingWindow processingWindow = new ProcessingWindow();
             processingWindow.Show();
@@ -147,34 +150,43 @@ namespace Labshell
                     {
                         Student student = new Student() { Number = lr.data.account, Name = lr.data.name, Token=lr.token, Id = lr.data.id};
                         ReservationResult rr = rf.GetValidity(CacheService.Instance.Lab.id, student.Token);
-                        if (rr.code == "200")
+                        if (rr != null)
                         {
-                            try
+                            if (rr.code == "200")
                             {
-                                CacheService.Instance.AddStuList(student);
-                                students.Add(student);
-                                this.studentList.Items.Refresh();
-                            }
-                            catch (ArgumentException)
-                            {
-                                LSMessageBox.Show("登陆异常", "已经存在该学生");
-                            }
+                                try
+                                {
+                                    student.ClassId = rr.data.clazz.id;
+                                    LSMessageBox.Show("班级ID", rr.data.clazz.id+"");
+                                    CacheService.Instance.AddStuList(student);
+                                    students.Add(student);
+                                    this.studentList.Items.Refresh();
+                                }
+                                catch (ArgumentException)
+                                {
+                                    LSMessageBox.Show("登陆异常", "已经存在该学生");
+                                }
 
-                            this.experiment.Content = rr.data.name;
-                            this.experimentId = rr.data.id;
-                            this.virtualExp = rr.data.virtual_exp_link;
-                            if (rr.data.virtual_exp_link == null || rr.data.virtual_exp_link == "")
-                            {
-                                this.virtualexp.IsEnabled = false;
+                                this.experiment.Content = rr.data.experiment.name;
+                                CacheService.Instance.ExperimentId = rr.data.experiment.id;
+                                this.virtualExp = rr.data.experiment.virtual_exp_link;
+                                if (rr.data.experiment.virtual_exp_link == null || rr.data.experiment.virtual_exp_link == "")
+                                {
+                                    this.virtualexp.IsEnabled = false;
+                                }
+                                else
+                                {
+                                    this.virtualexp.IsEnabled = true;
+                                }
                             }
                             else
                             {
-                                this.virtualexp.IsEnabled = true;
+                                LSMessageBox.Show("登陆异常", rr.message);
                             }
                         }
                         else
                         {
-                            LSMessageBox.Show("登陆异常", rr.message);
+                            LSMessageBox.Show("网络错误", "网络异常");
                         }
                     }
                     else

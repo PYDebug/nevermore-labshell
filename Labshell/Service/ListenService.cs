@@ -1,4 +1,5 @@
 ﻿using Labshell.Factory;
+using Labshell.JsonForm;
 using Labshell.Model;
 using Labshell.Result;
 using System;
@@ -35,14 +36,39 @@ namespace Labshell.Service
             {
                 if (fr.code == "200")
                 {
-                    UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id };
-                    this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                    //关联文件与记录
+                    List<Attach> attaches = new List<Attach>();
+                    foreach (Student s in CacheService.Instance.GetStudentList())
+                    {
+                        Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id };
+                        attaches.Add(a);
+                    }
+
+                    AttachResult ar = rf.AttachRecordWithFile(CacheService.Instance.ExperimentId, fr.data.id, attaches, CacheService.Instance.GetStuToken());
+
+                    if (ar != null)
+                    {
+                        if (ar.code == "200")
+                        {
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id };
+                            this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                        }
+                        else
+                        {
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                            this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                        }
+                    }
+                    else
+                    {
+                        UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                        this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                    }
                 }
                 else
                 {
                     UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
                     this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
-                    System.Windows.MessageBox.Show(fr.message);
                 }
             }
             else

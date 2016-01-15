@@ -8,11 +8,11 @@ namespace Labshell.JsonForm
 {
     class UserRecord
     {
-        public int classId { get; set; }
+        public int clazzId { get; set; }
 
         public int experimentId { get; set; }
 
-        public int studentId { get; set; }
+        public List<int> stuIds { get; set; }
 
         public int slotId { get; set; }
 

@@ -19,6 +19,7 @@ using System.Drawing;
 using Labshell.Service;
 using Labshell.Factory;
 using Labshell.Result;
+using Labshell.JsonForm;
 
 namespace Labshell
 {
@@ -134,9 +135,39 @@ namespace Labshell
                 {
                     if (fr.code == "200")
                     {
-                        UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = openFileDialog.FileName, Id = fr.data.id };
-                        upfiles.Add(up);
-                        fileList.Items.Refresh();
+                        //关联文件与记录
+                        List<Attach> attaches = new List<Attach>();
+                        foreach(Student s in CacheService.Instance.GetStudentList())
+                        {
+                            Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id};
+                            attaches.Add(a);
+                        }
+                        
+                        AttachResult ar = rf.AttachRecordWithFile(CacheService.Instance.ExperimentId, fr.data.id, attaches, CacheService.Instance.GetStuToken());
+
+                        if (ar != null)
+                        {
+                            if (ar.code == "200")
+                            {
+                                UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = openFileDialog.FileName, Id = fr.data.id };
+                                upfiles.Add(up);
+                                fileList.Items.Refresh();
+                            }
+                            else
+                            {
+                                LSMessageBox.Show("关联文件错误", ar.message);
+                                UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = openFileDialog.FileName, Id = -1 };
+                                upfiles.Add(up);
+                                fileList.Items.Refresh();
+                            }
+                        }
+                        else
+                        {
+                            LSMessageBox.Show("网络错误", "网络异常");
+                            UploadFile up = new UploadFile() { FileName = file_name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = openFileDialog.FileName, Id = -1 };
+                            upfiles.Add(up);
+                            fileList.Items.Refresh();
+                        }
                     }
                     else
                     {

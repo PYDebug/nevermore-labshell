@@ -31,7 +31,7 @@ namespace Labshell.Factory
             }
         }
 
-        public RecordResult GetRecord(int classId, int experimentId, int studentId, int labId, int machineId, String token)
+        public RecordResult GetRecord(int classId, int experimentId, List<int> studentIds, int labId, int machineId, String token)
         {
             RestClient client = new RestClient(ServerURL.URL);
             RestRequest request = new RestRequest("/experiment/{id}/userRecord", Method.POST);
@@ -40,14 +40,34 @@ namespace Labshell.Factory
             request.AddUrlSegment("id", experimentId + "");
             request.AddBody(new UserRecord 
             { 
-                classId = classId,
+                clazzId = classId,
                 experimentId = experimentId,
-                studentId = studentId,
+                stuIds = studentIds,
                 labId = labId,
                 machineId = machineId,
                 slotId = 1
             });
             var response = client.Execute<RecordResult>(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public AttachResult AttachRecordWithFile(int experimentId, int attachId, List<Attach> attaches, String token)
+        {
+            RestClient client = new RestClient(ServerURL.URL);
+            RestRequest request = new RestRequest("/experiment/{id}/records/attach/{attachId}", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("x-auth-token", token);
+            request.AddUrlSegment("id", experimentId + "");
+            request.AddUrlSegment("attachId", attachId + "");
+            request.AddBody(attaches);
+            var response = client.Execute<AttachResult>(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 return response.Data;
