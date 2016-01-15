@@ -31,22 +31,14 @@ namespace Labshell.Factory
             }
         }
 
-        public RecordResult GetRecord(int classId, int experimentId, List<int> studentIds, int labId, int machineId, String token)
+        public RecordResult GetRecord(int experimentId, List<UserRecord> records, String token)
         {
             RestClient client = new RestClient(ServerURL.URL);
             RestRequest request = new RestRequest("/experiment/{id}/userRecord", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("x-auth-token", token);
             request.AddUrlSegment("id", experimentId + "");
-            request.AddBody(new UserRecord 
-            { 
-                clazzId = classId,
-                experimentId = experimentId,
-                stuIds = studentIds,
-                labId = labId,
-                machineId = machineId,
-                slotId = 1
-            });
+            request.AddBody(records);
             var response = client.Execute<RecordResult>(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {

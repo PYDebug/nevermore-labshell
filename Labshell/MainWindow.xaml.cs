@@ -18,6 +18,7 @@ using Labshell.Result;
 using Labshell.Service;
 using Labshell.Util;
 using Microsoft.Win32;
+using Labshell.JsonForm;
 
 namespace Labshell
 {
@@ -107,19 +108,35 @@ namespace Labshell
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            List<int> ids = new List<int>();
-            foreach(Student stu in CacheService.Instance.GetStudentList())
+            List<UserRecord> records = new List<UserRecord>();
+            foreach (Student s in CacheService.Instance.GetStudentList())
             {
-                ids.Add(stu.Id);
+                UserRecord ur = new UserRecord
+                {
+                    clazzId = s.ClassId,
+                    experimentId = CacheService.Instance.ExperimentId,
+                    studentId = s.Id,
+                    labId = CacheService.Instance.Lab.id,
+                    machineId = CacheService.Instance.MachineId,
+                    slotId = 1
+                };
+                records.Add(ur);
             }
-            RecordResult rr = rcf.GetRecord(10000, CacheService.Instance.ExperimentId, ids, CacheService.Instance.Lab.id, CacheService.Instance.MachineId, CacheService.Instance.GetStuToken());
+            RecordResult rr = rcf.GetRecord(CacheService.Instance.ExperimentId, records, CacheService.Instance.GetStuToken());
             if (rr != null)
             {
                 if (rr.code == "200")
                 {
                     foreach(RecordResult.Record r in rr.data)
                     {
-                        CacheService.Instance.GetStudent(r.studentId).RecordId = r.id;
+                        try
+                        {
+                            CacheService.Instance.GetStudent(r.studentId).RecordId = r.id;
+                        }
+                        catch (Exception)
+                        {
+                            LSMessageBox.Show("实验异常","获取学生异常");
+                        }
                     }
                 }
                 else

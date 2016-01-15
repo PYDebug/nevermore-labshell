@@ -12,7 +12,7 @@ namespace Labshell.JsonForm
 
         public int experimentId { get; set; }
 
-        public List<int> stuIds { get; set; }
+        public int studentId { get; set; }
 
         public int slotId { get; set; }
 
