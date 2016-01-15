@@ -18,6 +18,8 @@ namespace Labshell.Result
 
         public class Account
         {
+            public int id { get; set; }
+
             public String account { get; set; }
 
             public String name { get; set; }

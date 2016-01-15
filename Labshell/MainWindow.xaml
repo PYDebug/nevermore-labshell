@@ -21,7 +21,7 @@
             <PasswordBox x:Name="password" HorizontalAlignment="Left" Height="34" Margin="45,234,0,0" VerticalAlignment="Top" Width="236" Style="{StaticResource DefaultPasswordBox}" local:WaterMarkText.Text="请输入密码" local:ControlAttachProperty.CornerRadius="5"/>
             <Button x:Name="loginButton" Content="添加学员" HorizontalAlignment="Left" Height="34" Margin="45,285,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LargeButton}" Foreground="White" Click="AddButton_Click"/>
             <Label x:Name="admin" Content="管理员模式" HorizontalAlignment="Left" Margin="41,326,0,0" VerticalAlignment="Top" Foreground="#FF00A1CC" Cursor="Hand" MouseDown="AdminLabel_MouseDown"/>
-            <Label x:Name="virtualexp" Content="虚拟实验" HorizontalAlignment="Left" Margin="224,326,0,0" VerticalAlignment="Top" Foreground="#FF9B9B9B" Cursor=""/>
+            <Label x:Name="virtualexp" Content="虚拟实验" HorizontalAlignment="Left" Margin="224,326,0,0" VerticalAlignment="Top" Foreground="#FF9B9B9B" Cursor="Hand" MouseDown="VirtualExp_MouseDown" IsEnabled="False"/>
             <Label Content="实验名称：" HorizontalAlignment="Left" Margin="41,102,0,0" VerticalAlignment="Top"/>
             <Label Content="实验室：" HorizontalAlignment="Left" Margin="41,127,0,0" VerticalAlignment="Top"/>
             <Label Content="赶快在下方加入一起做实验的小伙伴吧" HorizontalAlignment="Left" Margin="41,154,0,0" VerticalAlignment="Top" Width="240" FontSize="10" RenderTransformOrigin="0.5,0.5" Foreground="#FFF7A621"/>
@@ -29,7 +29,7 @@
             <Label x:Name="lab" HorizontalAlignment="Left" Margin="127,127,0,0" VerticalAlignment="Top" Content="{Binding Source={x:Static static:CacheService.Instance}, Path=Lab.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="实验组队情况" HorizontalAlignment="Left" Margin="367,99,0,0" VerticalAlignment="Top" FontSize="14"/>
             <Button x:Name="startButton" Content="开始实验" HorizontalAlignment="Left" Height="34" Margin="373,285,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LargeButton}" Foreground="White" Click="StartButton_Click"/>
-            <Label x:Name="admin_Copy" Content="不登陆，直接实验" HorizontalAlignment="Left" Margin="503,326,0,0" VerticalAlignment="Top" Foreground="#FF00A1CC" Cursor="Hand"/>
+            <Label x:Name="admin_Copy" Content="不登陆，直接实验" HorizontalAlignment="Left" Margin="503,326,0,0" VerticalAlignment="Top" Foreground="#FF00A1CC" Cursor="Hand" MouseDown="EnterNotLogin_MouseDown"/>
             <Button x:Name="resetButton" Content="重置" HorizontalAlignment="Left" Height="21" Margin="543,102,0,0" VerticalAlignment="Top" Width="66" Style="{DynamicResource SmallButton}" Foreground="White" FontSize="11" Click="ResetButton_Click"/>
             <ListBox x:Name="studentList" HorizontalAlignment="Left" Height="114" Margin="373,154,0,0" VerticalAlignment="Top" Width="236" Style="{DynamicResource LSListBox}" ItemContainerStyle="{DynamicResource ListBoxItem}"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>

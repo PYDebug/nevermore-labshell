@@ -1,4 +1,5 @@
-﻿using Labshell.Result;
+﻿using Labshell.JsonForm;
+using Labshell.Result;
 using Labshell.Service;
 using Labshell.Util;
 using RestSharp;
@@ -20,6 +21,33 @@ namespace Labshell.Factory
             request.AddHeader("x-auth-token", token);
             request.AddFile("file",file_path);
             var response = client.Execute<FileResult>(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public RecordResult GetRecord(int classId, int experimentId, int studentId, int labId, int machineId, String token)
+        {
+            RestClient client = new RestClient(ServerURL.URL);
+            RestRequest request = new RestRequest("/experiment/{id}/userRecord", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("x-auth-token", token);
+            request.AddUrlSegment("id", experimentId + "");
+            request.AddBody(new UserRecord 
+            { 
+                classId = classId,
+                experimentId = experimentId,
+                studentId = studentId,
+                labId = labId,
+                machineId = machineId,
+                slotId = 1
+            });
+            var response = client.Execute<RecordResult>(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 return response.Data;

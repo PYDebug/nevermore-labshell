@@ -88,11 +88,13 @@
     <Compile Include="Factory\RecordFactory.cs" />
     <Compile Include="Factory\ReservationFactory.cs" />
     <Compile Include="JsonForm\Machine.cs" />
+    <Compile Include="JsonForm\UserRecord.cs" />
     <Compile Include="LSMessageBox.xaml.cs">
       <DependentUpon>LSMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Lab.cs" />
     <Compile Include="Result\FileResult.cs" />
+    <Compile Include="Result\RecordResult.cs" />
     <Compile Include="Result\ReservationResult.cs" />
     <Compile Include="Result\Role.cs" />
     <Compile Include="Result\GeneralResult.cs" />

@@ -17,6 +17,7 @@ using Labshell.Factory;
 using Labshell.Result;
 using Labshell.Service;
 using Labshell.Util;
+using Microsoft.Win32;
 
 namespace Labshell
 {
@@ -31,7 +32,14 @@ namespace Labshell
 
         private ReservationFactory rf = new ReservationFactory();
 
+        private RecordFactory rcf = new RecordFactory();
+
         private RealTimeCheck rtc = new RealTimeCheck();
+
+        //动态获取的数据
+        private int experimentId = 0;
+
+        private String virtualExp;
 
         public MainWindow()
         {
@@ -100,6 +108,28 @@ namespace Labshell
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            foreach(Student stu in CacheService.Instance.GetStudentList())
+            {
+                RecordResult rr = rcf.GetRecord(10000, experimentId, stu.Id, CacheService.Instance.Lab.id, CacheService.Instance.MachineId, stu.Token);
+                if (rr != null)
+                {
+                    if (rr.code == "200")
+                    {
+                        stu.RecordId = rr.data[0].id;
+                        LSMessageBox.Show("test", rr.data[0].id+"");
+                    }
+                    else
+                    {
+                        LSMessageBox.Show("实验异常", rr.message);
+                        return;
+                    }
+                }
+                else 
+                {
+                    LSMessageBox.Show("网络错误", "网络异常");
+                    return;
+                }
+            }
             ProcessingWindow processingWindow = new ProcessingWindow();
             processingWindow.Show();
             processingWindow.Owner = this;
@@ -115,7 +145,7 @@ namespace Labshell
                 {
                     if (AccountUtil.IsRole(AccountUtil.STUDENT, lr.data.roles))
                     {
-                        Student student = new Student() { Number = lr.data.account, Name = lr.data.name, Token=lr.token};
+                        Student student = new Student() { Number = lr.data.account, Name = lr.data.name, Token=lr.token, Id = lr.data.id};
                         ReservationResult rr = rf.GetValidity(CacheService.Instance.Lab.id, student.Token);
                         if (rr.code == "200")
                         {
@@ -131,6 +161,16 @@ namespace Labshell
                             }
 
                             this.experiment.Content = rr.data.name;
+                            this.experimentId = rr.data.id;
+                            this.virtualExp = rr.data.virtual_exp_link;
+                            if (rr.data.virtual_exp_link == null || rr.data.virtual_exp_link == "")
+                            {
+                                this.virtualexp.IsEnabled = false;
+                            }
+                            else
+                            {
+                                this.virtualexp.IsEnabled = true;
+                            }
                         }
                         else
                         {
@@ -160,6 +200,28 @@ namespace Labshell
             this.students.Clear();
             this.studentList.Items.Refresh();
             CacheService.Instance.ClearStudentList();
+        }
+
+        private void EnterNotLogin_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CacheService.Instance.ClearStudentList();
+            ProcessingWindow processingWindow = new ProcessingWindow();
+            processingWindow.Show();
+            processingWindow.Owner = this;
+            this.Hide();
+        }
+
+        private void VirtualExp_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
+            String path = key.GetValue("").ToString();
+            if (path.Contains("\""))
+            {
+                path = path.TrimStart('"');
+                path = path.Substring(0, path.IndexOf('"'));
+            }
+            key.Close();
+            System.Diagnostics.Process.Start(path, this.virtualExp);
         }
 
     }

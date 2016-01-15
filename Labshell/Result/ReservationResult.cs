@@ -18,7 +18,11 @@ namespace Labshell.Result
 
         public class Experiment
         {
+            public int id { get; set; }
+
             public String name { get; set; }
+
+            public String virtual_exp_link { get; set; }
         }
     }
 }
