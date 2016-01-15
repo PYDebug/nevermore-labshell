@@ -66,9 +66,29 @@ namespace Labshell
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            device.SignalToStop();
-            device.WaitForStop(); 
-            Application.Current.Shutdown();
+            List<int> ids = new List<int>();
+            foreach (Student s in CacheService.Instance.GetStudentList())
+            {
+                ids.Add(s.RecordId);
+            }
+            AttachResult ar = rf.FinishExperiment(CacheService.Instance.ExperimentId, ids, CacheService.Instance.GetStuToken());
+            if (ar != null)
+            {
+                if (ar.code == "200")
+                {
+                    device.SignalToStop();
+                    device.WaitForStop();
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    LSMessageBox.Show("完成实验异常", ar.message);
+                }
+            }
+            else
+            {
+                LSMessageBox.Show("网络错误", "网络异常");
+            }
         }
 
         private void MinButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -93,9 +113,29 @@ namespace Labshell
 
         private void ExitButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            device.SignalToStop();
-            device.WaitForStop(); 
-            Application.Current.Shutdown();
+            List<int> ids = new List<int>();
+            foreach (Student s in CacheService.Instance.GetStudentList())
+            {
+                ids.Add(s.RecordId);
+            }
+            AttachResult ar = rf.FinishExperiment(CacheService.Instance.ExperimentId, ids,  CacheService.Instance.GetStuToken());
+            if (ar != null)
+            {
+                if (ar.code == "200")
+                {
+                    device.SignalToStop();
+                    device.WaitForStop();
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    LSMessageBox.Show("完成实验异常", ar.message);
+                }
+            }
+            else
+            {
+                LSMessageBox.Show("网络错误", "网络异常");
+            }
         }
 
         private void initVideo()

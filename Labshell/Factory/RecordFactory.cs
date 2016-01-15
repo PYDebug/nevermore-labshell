@@ -77,5 +77,27 @@ namespace Labshell.Factory
                 return null;
             }
         }
+
+        public AttachResult FinishExperiment(int experimentId, List<int> ids, String token)
+        {
+            RestClient client = new RestClient(ServerURL.URL);
+            RestRequest request = new RestRequest("/experiment/{id}/records", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("x-auth-token", token);
+            request.AddUrlSegment("id", experimentId + "");
+            request.AddBody(new FinishRecord 
+            { 
+                ids = ids
+            });
+            var response = client.Execute<AttachResult>(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
