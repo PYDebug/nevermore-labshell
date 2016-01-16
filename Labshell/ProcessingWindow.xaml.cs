@@ -52,11 +52,11 @@ namespace Labshell
 
             rtc.SetLabel(this.netInfo);
             rtc.SetImage(this.netState);
+            rtc.SetVedioImage(this.videoState);
+            rtc.SetVedioLabel(this.videoInfo);
             rtc.Start();
 
-            cs.SetDevice(this.device);
             cs.SetSavePath(System.Environment.CurrentDirectory + "/photo");
-            cs.Start();
 
             ls.SetListBox(this.fileList);
             ls.SetPaths(CacheService.Instance.GetListenPath());
@@ -66,29 +66,9 @@ namespace Labshell
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            List<int> ids = new List<int>();
-            foreach (Student s in CacheService.Instance.GetStudentList())
-            {
-                ids.Add(s.RecordId);
-            }
-            AttachResult ar = rf.FinishExperiment(CacheService.Instance.ExperimentId, ids, CacheService.Instance.GetStuToken());
-            if (ar != null)
-            {
-                if (ar.code == "200")
-                {
-                    device.SignalToStop();
-                    device.WaitForStop();
-                    Application.Current.Shutdown();
-                }
-                else
-                {
-                    LSMessageBox.Show("完成实验异常", ar.message);
-                }
-            }
-            else
-            {
-                LSMessageBox.Show("网络错误", "网络异常");
-            }
+            device.SignalToStop();
+            device.WaitForStop();
+            Application.Current.Shutdown();
         }
 
         private void MinButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -143,10 +123,20 @@ namespace Labshell
             // 设定初始视频设备  
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             if (videoDevices.Count > 0)
-            {   // 默认设备  
+            {
+                this.vedioGrid.Visibility = System.Windows.Visibility.Visible;
+                this.noneGrid.Visibility = System.Windows.Visibility.Collapsed;
+                // 默认设备  
                 device = new VideoCaptureDevice(videoDevices[0].MonikerString);
                 device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
                 device.Start();
+                cs.SetDevice(this.device);
+                cs.Start();//启动自动拍照线程
+            }
+            else
+            {
+                this.vedioGrid.Visibility = System.Windows.Visibility.Collapsed;
+                this.noneGrid.Visibility = System.Windows.Visibility.Visible;
             }
         }
 
@@ -225,6 +215,11 @@ namespace Labshell
                     fileList.Items.Refresh();
                 }
             }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            initVideo();
         }
     }
 }

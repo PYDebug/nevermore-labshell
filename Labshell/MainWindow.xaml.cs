@@ -52,6 +52,8 @@ namespace Labshell
             this.studentList.ItemsSource = students;
             rtc.SetLabel(this.netInfo);
             rtc.SetImage(this.netState);
+            rtc.SetVedioImage(this.videoState);
+            rtc.SetVedioLabel(this.videoInfo);
             rtc.Start();
         }
 

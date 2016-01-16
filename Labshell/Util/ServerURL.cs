@@ -8,7 +8,7 @@ namespace Labshell.Util
 {
     public class ServerURL
     {
-        public static String URL = "http://10.211.55.2:8080";
-        public static String PING_URL = "10.211.55.2";
+        public static String URL = "http://192.168.3.5:8080";//"http://10.211.55.2:8080";
+        public static String PING_URL = "192.168.3.5";//"10.211.55.2";
     }
 }

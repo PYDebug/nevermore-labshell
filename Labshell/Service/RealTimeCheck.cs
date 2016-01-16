@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Net.NetworkInformation;
+using AForge.Video.DirectShow;
 
 namespace Labshell.Service
 {
@@ -17,9 +18,15 @@ namespace Labshell.Service
     {
         private Label label;
 
+        private Label vedio_label;
+
         private Action<Label, String> updateLabelAction;
 
         private Action<Image, BitmapImage> updateImageAction;
+
+        private Action<Label, String> updateVedioLabelAction;
+
+        private Action<Image, BitmapImage> updateVedioImageAction;
 
         BitmapImage good = new BitmapImage(new Uri(@"images/ic-good.png",UriKind.Relative));
 
@@ -27,15 +34,22 @@ namespace Labshell.Service
 
         private Image image;
 
+        private Image vedio_image;
+
         private bool netStatus;
+
+        private bool vedio_status;
 
         private Task t;
 
         public RealTimeCheck()
         {
             netStatus = true;
-            updateLabelAction = new Action<Label, string>(UpdateNetInfo);
+            vedio_status = true;
+            updateLabelAction = new Action<Label, String>(UpdateNetInfo);
             updateImageAction = new Action<Image, BitmapImage>(UpdateNetImage);
+            updateVedioLabelAction = new Action<Label, String>(UpdateVedioInfo);
+            updateVedioImageAction = new Action<Image, BitmapImage>(UpdateVedioImage);
         }
 
         public void Start()
@@ -70,6 +84,20 @@ namespace Labshell.Service
                             this.netStatus = false;
                         }
                     }
+
+                    FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                    if (videoDevices.Count == 0 && this.vedio_status)
+                    {
+                        vedio_label.Dispatcher.BeginInvoke(updateVedioLabelAction, vedio_label, "摄像头异常");
+                        this.vedio_image.Dispatcher.BeginInvoke(updateVedioImageAction, vedio_image, exception);
+                        this.vedio_status = false;
+                    }
+                    else if(videoDevices.Count !=0 && !this.vedio_status)
+                    {
+                        vedio_label.Dispatcher.BeginInvoke(updateVedioLabelAction, vedio_label, "摄像头正常");
+                        this.vedio_image.Dispatcher.BeginInvoke(updateVedioImageAction, vedio_image, good);
+                        this.vedio_status = true;
+                    }
                 }
                 catch (Exception)
                 {
@@ -95,6 +123,16 @@ namespace Labshell.Service
             l.Content = content;
         }
 
+        private void UpdateVedioImage(Image i, BitmapImage bt)
+        {
+            i.Source = bt;
+        }
+
+        private void UpdateVedioInfo(Label l, String content)
+        {
+            l.Content = content;
+        }
+
         public void SetLabel(Label l)
         {
             this.label = l;
@@ -103,6 +141,16 @@ namespace Labshell.Service
         public void SetImage(Image i)
         {
             this.image = i;
+        }
+
+        public void SetVedioLabel(Label l)
+        {
+            this.vedio_label = l;
+        }
+
+        public void SetVedioImage(Image i)
+        {
+            this.vedio_image = i;
         }
 
         public void SetNetStatus(bool i)
