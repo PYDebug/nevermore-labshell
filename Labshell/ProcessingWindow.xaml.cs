@@ -29,13 +29,18 @@ namespace Labshell
     public partial class ProcessingWindow : Window
     {
         private List<UploadFile> upfiles = new List<UploadFile>();
+
         private VideoCaptureDevice device;
+
+        private VideoCaptureDevice device2;
 
         private RecordFactory rf = new RecordFactory();
 
         private RealTimeCheck rtc = new RealTimeCheck();
 
         private CaptureService cs = new CaptureService();
+
+        private CaptureService cs2 = new CaptureService();
 
         private ListenService ls = new ListenService();
 
@@ -57,6 +62,10 @@ namespace Labshell
             rtc.Start();
 
             cs.SetSavePath(System.Environment.CurrentDirectory + "/photo");
+            cs.SetDeviceId(1);
+
+            cs2.SetSavePath(System.Environment.CurrentDirectory + "/photo");
+            cs2.SetDeviceId(2);
 
             ls.SetListBox(this.fileList);
             ls.SetPaths(CacheService.Instance.GetListenPath());
@@ -66,8 +75,16 @@ namespace Labshell
 
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            device.SignalToStop();
-            device.WaitForStop();
+            if (device != null)
+            {
+                device.SignalToStop();
+                device.WaitForStop();
+            }
+            if (device2 != null)
+            {
+                device2.SignalToStop();
+                device2.WaitForStop();
+            }
             Application.Current.Shutdown();
         }
 
@@ -103,8 +120,16 @@ namespace Labshell
             {
                 if (ar.code == "200")
                 {
-                    device.SignalToStop();
-                    device.WaitForStop();
+                    if (device != null)
+                    {
+                        device.SignalToStop();
+                        device.WaitForStop();
+                    }
+                    if (device2 != null)
+                    {
+                        device2.SignalToStop();
+                        device2.WaitForStop();
+                    }
                     Application.Current.Shutdown();
                 }
                 else
@@ -118,25 +143,56 @@ namespace Labshell
             }
         }
 
+        private void initVideo1()
+        {
+            // 设定初始视频设备  
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            this.vedioGrid.Visibility = System.Windows.Visibility.Visible;
+            this.noneGrid.Visibility = System.Windows.Visibility.Collapsed;
+            // 默认设备  
+            device = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
+            device.Start();
+            cs.SetDevice(this.device);
+            cs.Start();//启动自动拍照线程
+        }
+
+        private void initVideo2()
+        {
+            // 设定初始视频设备  
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            this.vedio2Grid.Visibility = System.Windows.Visibility.Visible;
+            this.none2Grid.Visibility = System.Windows.Visibility.Collapsed;
+            // 默认设备  
+            device2 = new VideoCaptureDevice(videoDevices[1].MonikerString);
+            device2.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame2);
+            device2.Start();
+            cs2.SetDevice(this.device2);
+            cs2.Start();//启动自动拍照线程
+        }
+
         private void initVideo()
         {
             // 设定初始视频设备  
             FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            if (videoDevices.Count > 0)
+            if (videoDevices.Count == 1)
             {
-                this.vedioGrid.Visibility = System.Windows.Visibility.Visible;
-                this.noneGrid.Visibility = System.Windows.Visibility.Collapsed;
-                // 默认设备  
-                device = new VideoCaptureDevice(videoDevices[0].MonikerString);
-                device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
-                device.Start();
-                cs.SetDevice(this.device);
-                cs.Start();//启动自动拍照线程
+                initVideo1();
+                this.vedio2Grid.Visibility = System.Windows.Visibility.Collapsed;
+                this.none2Grid.Visibility = System.Windows.Visibility.Visible;
             }
-            else
+            else if (videoDevices.Count == 2)
+            {
+                initVideo1();
+                initVideo2();
+            }
+            else if (videoDevices.Count == 0)
             {
                 this.vedioGrid.Visibility = System.Windows.Visibility.Collapsed;
                 this.noneGrid.Visibility = System.Windows.Visibility.Visible;
+
+                this.vedio2Grid.Visibility = System.Windows.Visibility.Collapsed;
+                this.none2Grid.Visibility = System.Windows.Visibility.Visible;
             }
         }
 
@@ -147,6 +203,15 @@ namespace Labshell
             GC.Collect();
 
             picture.Image = bitmap;
+        }
+
+        private void videoSourcePlayer_NewFrame2(object sender, NewFrameEventArgs eventArgs)
+        {
+            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+
+            GC.Collect();
+
+            picture2.Image = bitmap;
         }
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
@@ -219,7 +284,32 @@ namespace Labshell
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            initVideo();
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videoDevices.Count == 0)
+            {
+                LSMessageBox.Show("摄像头异常", "没检测到摄像头，请确保摄像头安装正常");
+            }
+            else
+            {
+                initVideo1();
+            }
+        }
+
+        private void RefreshButton2_Click(object sender, RoutedEventArgs e)
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            if (videoDevices.Count == 0)
+            {
+                LSMessageBox.Show("摄像头异常", "没检测到摄像头，请确保摄像头安装正常");
+            }
+            else if (videoDevices.Count < 2)
+            {
+                LSMessageBox.Show("摄像头异常", "没检测到第二个摄像头，请确保摄像头安装正常");
+            }
+            else
+            {
+                initVideo2();
+            }
         }
     }
 }

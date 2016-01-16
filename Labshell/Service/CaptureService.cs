@@ -20,6 +20,8 @@ namespace Labshell.Service
 
         private String save_path;
 
+        private int device_id;
+
         public void Start()
         {
             device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
@@ -36,13 +38,18 @@ namespace Labshell.Service
             this.save_path = sp;
         }
 
+        public void SetDeviceId(int id)
+        {
+            this.device_id = id;
+        }
+
         private void videoSourcePlayer_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
 
             if (task.Contains(0))
             {
-                String timepath = DateTime.Now.Hour.ToString() + "_" + DateTime.Now.Minute.ToString() + "_" + DateTime.Now.Second.ToString();
+                String timepath = DateTime.Now.Hour.ToString() + "_" + DateTime.Now.Minute.ToString() + "_" + DateTime.Now.Second.ToString() + "_" + device_id;
                 string img = this.save_path + "/" + timepath + ".jpg";
                 bitmap.Save(img);
                 task.Remove(0);

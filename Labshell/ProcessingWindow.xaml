@@ -61,16 +61,27 @@
             <Grid HorizontalAlignment="Left" Height="56" Margin="0,461,0,0" VerticalAlignment="Top" Width="373" Background="#FF9B9B9B">
                 <Label Content="请勿关闭摄像头" HorizontalAlignment="Left" Margin="128,12,0,0" VerticalAlignment="Top" Foreground="Red" FontSize="16"/>
             </Grid>
-            <Grid x:Name="vedioGrid" HorizontalAlignment="Left" Height="461" VerticalAlignment="Top" Width="373" Background="#FF373636">
-                <WindowsFormsHost Margin="0,1,0,-1" Panel.ZIndex="200" Width="373" Height="461">
+            <Grid x:Name="vedioGrid" HorizontalAlignment="Left" Height="230" VerticalAlignment="Top" Width="373" Background="#FF373636">
+                <WindowsFormsHost Margin="0,1,0,-1" Panel.ZIndex="200" Width="373" Height="230">
                     <!--<aforge:VideoSourcePlayer x:Name="sourcePlayer" Width="373" Height="461">
                     </aforge:VideoSourcePlayer>-->
                     <wf:PictureBox x:Name="picture" SizeMode="StretchImage"/>
                 </WindowsFormsHost>
             </Grid>
-            <Grid x:Name="noneGrid" HorizontalAlignment="Left" Height="461" VerticalAlignment="Top" Width="373" Background="#FF373636">
-                <Label Content="摄像头不可用" HorizontalAlignment="Left" Margin="121,189,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
-                <Button Content="刷新" HorizontalAlignment="Left" Margin="149,236,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource LinkButton}" Foreground="#FF00A1CC" FontSize="15" Click="RefreshButton_Click" Cursor="Hand"/>
+            <Grid x:Name="noneGrid" HorizontalAlignment="Left" Height="231" VerticalAlignment="Top" Width="373" Background="#FF373636">
+                <Label Content="摄像头不可用" HorizontalAlignment="Left" Margin="121,91,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+                <Button Content="刷新" HorizontalAlignment="Left" Margin="149,138,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource LinkButton}" Foreground="#FF00A1CC" FontSize="15" Click="RefreshButton_Click" Cursor="Hand"/>
+            </Grid>
+            <Grid x:Name="vedio2Grid" HorizontalAlignment="Left" Height="230" VerticalAlignment="Top" Width="373" Background="#FF373636" Margin="0,231,0,0">
+                <WindowsFormsHost Margin="0,1,0,-1" Panel.ZIndex="200" Width="373" Height="230">
+                    <!--<aforge:VideoSourcePlayer x:Name="sourcePlayer" Width="373" Height="461">
+                    </aforge:VideoSourcePlayer>-->
+                    <wf:PictureBox x:Name="picture2" SizeMode="StretchImage"/>
+                </WindowsFormsHost>
+            </Grid>
+            <Grid x:Name="none2Grid" HorizontalAlignment="Left" Height="231" VerticalAlignment="Top" Width="373" Background="#FF373636" Margin="0,231,0,0">
+                <Label Content="摄像头不可用" HorizontalAlignment="Left" Margin="121,91,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20"/>
+                <Button Content="刷新" HorizontalAlignment="Left" Margin="149,138,0,0" VerticalAlignment="Top" Width="75" Style="{DynamicResource LinkButton}" Foreground="#FF00A1CC" FontSize="15" Click="RefreshButton2_Click" Cursor="Hand"/>
             </Grid>
         </Grid>
     </Grid>
