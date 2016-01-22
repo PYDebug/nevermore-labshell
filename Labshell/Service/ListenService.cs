@@ -17,15 +17,34 @@ namespace Labshell.Service
     {
         private ListBox cb;
 
+        private String type;
+
+        private String filter;
+
+        private String fileType;
+
         private Action<ListBox, UploadFile> updateListBoxAction;
 
         private RecordFactory rf = new RecordFactory();
 
         List<FileSystemWatcher> watchers = new List<FileSystemWatcher>();
 
-        public ListenService()
+        public ListenService(String type)
         {
             updateListBoxAction = new Action<ListBox, UploadFile>(UpdateListBox);
+            this.type = type;
+            if (type.Equals("EXPERIMENT_RECORD_FILE"))
+            {
+                fileType = UploadFile.EXPERIMENT;
+            }
+            else if (type.Equals("EXPERIMENT_RECORD_IMAGE"))
+            {
+                fileType = UploadFile.PHOTO;
+            }
+            else
+            {
+                fileType = UploadFile.EXTRA;
+            }
         }
 
         private void WatchCreated(object sender, FileSystemEventArgs e)
@@ -40,7 +59,7 @@ namespace Labshell.Service
                     List<Attach> attaches = new List<Attach>();
                     foreach (Student s in CacheService.Instance.GetStudentList())
                     {
-                        Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id };
+                        Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id, type = type};
                         attaches.Add(a);
                     }
 
@@ -50,30 +69,30 @@ namespace Labshell.Service
                     {
                         if (ar.code == "200")
                         {
-                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id };
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id };
                             this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                         }
                         else
                         {
-                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
                             this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                         }
                     }
                     else
                     {
-                        UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                        UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
                         this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                     }
                 }
                 else
                 {
-                    UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                    UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
                     this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                 }
             }
             else
             {
-                UploadFile up = new UploadFile() { FileName = fi.Name, FileType = UploadFile.EXPERIMENT, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
                 this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
             }
         }
@@ -86,11 +105,16 @@ namespace Labshell.Service
                 watcher.BeginInit();
                 watcher.Path = path.Path;
                 watcher.EnableRaisingEvents = true;
-                watcher.Filter = "*.txt";
+                watcher.Filter = filter;
                 watcher.Created += new FileSystemEventHandler(WatchCreated);
                 watcher.EndInit();
                 watchers.Add(watcher);
             }
+        }
+
+        public void SetFilter(String f)
+        {
+            this.filter = f;
         }
 
         public void SetListBox(ListBox cb)

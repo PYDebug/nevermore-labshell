@@ -12,6 +12,8 @@ namespace Labshell.Model
 
         public static String PHOTO = "实验摄像图";
 
+        public static String EXTRA = "其他";
+
         public static String SUCCESS = "上传成功";
 
         public static String WAIT = "未上传";

@@ -11,5 +11,7 @@ namespace Labshell.JsonForm
         public int subjectId { get; set; }
 
         public int ownerId { get; set; }
+
+        public String type { get; set; }
     }
 }

@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using System.Drawing;
+using Labshell.Result;
+using Labshell.JsonForm;
+using Labshell.Model;
+using Labshell.Factory;
+using System.Windows.Controls;
 
 namespace Labshell.Service
 {
@@ -22,8 +27,17 @@ namespace Labshell.Service
 
         private int device_id;
 
+        private RecordFactory rf = new RecordFactory();
+
+        private String fileType = UploadFile.PHOTO;
+
+        private ListBox cb;
+
+        private Action<ListBox, UploadFile> updateListBoxAction;
+
         public void Start()
         {
+            updateListBoxAction = new Action<ListBox, UploadFile>(UpdateListBox);
             device.NewFrame += new NewFrameEventHandler(videoSourcePlayer_NewFrame);
             t = Task.Factory.StartNew(Capture);
         }
@@ -53,6 +67,52 @@ namespace Labshell.Service
                 string img = this.save_path + "/" + timepath + ".jpg";
                 bitmap.Save(img);
                 task.Remove(0);
+
+                FileResult fr = rf.UploadFile(img, CacheService.Instance.GetStuToken());
+                if (fr != null)
+                {
+                    if (fr.code == "200")
+                    {
+                        //关联文件与记录
+                        List<Attach> attaches = new List<Attach>();
+                        foreach (Student s in CacheService.Instance.GetStudentList())
+                        {
+                            Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id, type = "EXPERIMENT_RECORD_IMAGE" };
+                            attaches.Add(a);
+                        }
+
+                        AttachResult ar = rf.AttachRecordWithFile(CacheService.Instance.ExperimentId, fr.data.id, attaches, CacheService.Instance.GetStuToken());
+
+                        if (ar != null)
+                        {
+                            if (ar.code == "200")
+                            {
+                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.SUCCESS, FilePath = img, Id = fr.data.id };
+                                this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                            }
+                            else
+                            {
+                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                                this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                            }
+                        }
+                        else
+                        {
+                            UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                            this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                        }
+                    }
+                    else
+                    {
+                        UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                        this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                    }
+                }
+                else
+                {
+                    UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                    this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
+                }
             }
         }
 
@@ -65,7 +125,7 @@ namespace Labshell.Service
         {
             while (true)
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
                 try
                 {
                     task.Add(0);
@@ -75,8 +135,20 @@ namespace Labshell.Service
 
                 }
 
-                Thread.Sleep(600000);
+                Thread.Sleep(10000);
             }
+        }
+
+        public void SetListBox(ListBox cb)
+        {
+            this.cb = cb;
+        }
+
+        private void UpdateListBox(ListBox cb, UploadFile file)
+        {
+            List<UploadFile> list = (List<UploadFile>)cb.ItemsSource;
+            list.Add(file);
+            cb.Items.Refresh();
         }
     }
 }

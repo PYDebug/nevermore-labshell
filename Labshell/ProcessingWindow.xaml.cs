@@ -42,7 +42,9 @@ namespace Labshell
 
         private CaptureService cs2 = new CaptureService();
 
-        private ListenService ls = new ListenService();
+        private ListenService ls = new ListenService("EXPERIMENT_RECORD_FILE");
+
+        //private ListenService ps = new ListenService("EXPERIMENT_RECORD_IMAGE");
 
         public ProcessingWindow()
         {
@@ -55,20 +57,26 @@ namespace Labshell
         {
             this.fileList.ItemsSource = upfiles;
 
+            //配置实时监控
             rtc.SetLabel(this.netInfo);
             rtc.SetImage(this.netState);
             rtc.SetVedioImage(this.videoState);
             rtc.SetVedioLabel(this.videoInfo);
             rtc.Start();
 
+            //配置监听实验数据上传
+            ls.SetFilter("*.txt");
+            ls.SetListBox(this.fileList);
+            ls.SetPaths(CacheService.Instance.GetListenPath());
+
+            //配置摄像头
             cs.SetSavePath(System.Environment.CurrentDirectory + "/photo");
             cs.SetDeviceId(1);
+            cs.SetListBox(this.fileList);
 
             cs2.SetSavePath(System.Environment.CurrentDirectory + "/photo");
             cs2.SetDeviceId(2);
-
-            ls.SetListBox(this.fileList);
-            ls.SetPaths(CacheService.Instance.GetListenPath());
+            cs2.SetListBox(this.fileList);
 
             this.groupLabel.Content = "当前共"+CacheService.Instance.GetStudentList().Count+"人组队";
         }
@@ -234,7 +242,7 @@ namespace Labshell
                         List<Attach> attaches = new List<Attach>();
                         foreach(Student s in CacheService.Instance.GetStudentList())
                         {
-                            Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id};
+                            Attach a = new Attach { subjectId = s.RecordId, ownerId = s.Id, type = "EXPERIMENT_RECORD_FILE" };
                             attaches.Add(a);
                         }
                         
