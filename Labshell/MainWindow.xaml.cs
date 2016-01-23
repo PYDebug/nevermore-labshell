@@ -19,6 +19,8 @@ using Labshell.Service;
 using Labshell.Util;
 using Microsoft.Win32;
 using Labshell.JsonForm;
+using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Labshell
 {
@@ -110,6 +112,11 @@ namespace Labshell
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            if (CacheService.Instance.LaunchPath == null || CacheService.Instance.LaunchPath.Equals(""))
+            {
+                LSMessageBox.Show("启动异常","没配置启动路径");
+                return;
+            }
             List<UserRecord> records = new List<UserRecord>();
             foreach (Student s in CacheService.Instance.GetStudentList())
             {
@@ -152,6 +159,7 @@ namespace Labshell
                 LSMessageBox.Show("网络错误", "网络异常");
                 return;
             }
+            launch(CacheService.Instance.LaunchPath);
             ProcessingWindow processingWindow = new ProcessingWindow();
             processingWindow.Show();
             processingWindow.Owner = this;
@@ -235,6 +243,12 @@ namespace Labshell
 
         private void EnterNotLogin_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (CacheService.Instance.LaunchPath == null || CacheService.Instance.LaunchPath.Equals(""))
+            {
+                LSMessageBox.Show("启动异常", "没配置启动路径");
+                return;
+            }
+            launch(CacheService.Instance.LaunchPath);
             CacheService.Instance.ClearStudentList();
             ProcessingWindow processingWindow = new ProcessingWindow();
             processingWindow.Show();
@@ -253,6 +267,20 @@ namespace Labshell
             }
             key.Close();
             System.Diagnostics.Process.Start(path, this.virtualExp);
+        }
+
+        private void launch(String path)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = path;
+            try
+            { 
+                p.Start();
+            }
+            catch (Win32Exception err)
+            {
+                LSMessageBox.Show("启动异常",err.Message);
+            }
         }
 
     }

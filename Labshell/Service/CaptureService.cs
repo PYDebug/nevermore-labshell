@@ -135,7 +135,7 @@ namespace Labshell.Service
 
                 }
 
-                Thread.Sleep(10000);
+                Thread.Sleep(600000);
             }
         }
 
