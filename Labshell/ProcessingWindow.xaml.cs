@@ -118,36 +118,40 @@ namespace Labshell
 
         private void ExitButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            List<int> ids = new List<int>();
-            foreach (Student s in CacheService.Instance.GetStudentList())
+            bool? result = LSMessageBox.YNShow("退出", "确认完成实验？");
+            if (result == true)
             {
-                ids.Add(s.RecordId);
-            }
-            AttachResult ar = rf.FinishExperiment(CacheService.Instance.ExperimentId, ids,  CacheService.Instance.GetStuToken());
-            if (ar != null)
-            {
-                if (ar.code == "200")
+                List<int> ids = new List<int>();
+                foreach (Student s in CacheService.Instance.GetStudentList())
                 {
-                    if (device != null)
+                    ids.Add(s.RecordId);
+                }
+                AttachResult ar = rf.FinishExperiment(CacheService.Instance.ExperimentId, ids, CacheService.Instance.GetStuToken());
+                if (ar != null)
+                {
+                    if (ar.code == "200")
                     {
-                        device.SignalToStop();
-                        device.WaitForStop();
+                        if (device != null)
+                        {
+                            device.SignalToStop();
+                            device.WaitForStop();
+                        }
+                        if (device2 != null)
+                        {
+                            device2.SignalToStop();
+                            device2.WaitForStop();
+                        }
+                        Application.Current.Shutdown();
                     }
-                    if (device2 != null)
+                    else
                     {
-                        device2.SignalToStop();
-                        device2.WaitForStop();
+                        LSMessageBox.Show("完成实验异常", ar.message);
                     }
-                    Application.Current.Shutdown();
                 }
                 else
                 {
-                    LSMessageBox.Show("完成实验异常", ar.message);
+                    LSMessageBox.Show("网络错误", "网络异常");
                 }
-            }
-            else
-            {
-                LSMessageBox.Show("网络错误", "网络异常");
             }
         }
 

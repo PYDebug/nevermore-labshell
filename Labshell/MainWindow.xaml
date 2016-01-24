@@ -15,7 +15,7 @@
                 <ImageBrush ImageSource="images/main-bg.png"/>
             </Grid.Background>
 
-            <Label x:Name="title" Content="同济大学航力云平台" HorizontalAlignment="Left" Height="47" Margin="214,30,0,0" VerticalAlignment="Top" Width="227" FontSize="24" Foreground="#FF4A4A4A"/>
+            <Label x:Name="title" Content="同济大学力学云平台" HorizontalAlignment="Left" Height="47" Margin="214,30,0,0" VerticalAlignment="Top" Width="227" FontSize="24" Foreground="#FF4A4A4A"/>
             <Border x:Name="splitline" BorderBrush="#729B9B9B" BorderThickness="1" HorizontalAlignment="Left" Height="249" Margin="326,102,0,0" VerticalAlignment="Top" Width="1" Background="#729B9B9B"/>
             <TextBox x:Name="number" HorizontalAlignment="Left" Height="34" Margin="45,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="236" Style="{StaticResource DefaultTextBox}" local:ControlAttachProperty.Watermark="请输入学号" local:ControlAttachProperty.CornerRadius="5"/>
             <PasswordBox x:Name="password" HorizontalAlignment="Left" Height="34" Margin="45,234,0,0" VerticalAlignment="Top" Width="236" Style="{StaticResource DefaultPasswordBox}" local:WaterMarkText.Text="请输入密码" local:ControlAttachProperty.CornerRadius="5"/>

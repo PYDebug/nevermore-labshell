@@ -75,7 +75,26 @@ namespace Labshell
 
         }
 
-        private void Yes_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public static bool? YNShow(string title, string msg)
+        {
+
+            var msgBox = new LSMessageBox();
+
+            msgBox.yes.Visibility = Visibility.Visible;
+
+            msgBox.no.Visibility = Visibility.Visible;
+
+            msgBox.ok.Visibility = Visibility.Collapsed;
+
+            msgBox.Title = title;
+
+            msgBox.Message = msg;
+
+            return msgBox.ShowDialog();
+
+        }
+
+        private void Yes_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
 
             this.DialogResult = true;
@@ -84,7 +103,7 @@ namespace Labshell
 
         }
 
-        private void No_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void No_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
 
             this.DialogResult = false;
