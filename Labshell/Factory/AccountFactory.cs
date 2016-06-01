@@ -15,7 +15,7 @@ namespace Labshell.Factory
         public LoginResult Login(String username, String password)
         {
             RestClient client = new RestClient(ServerURL.URL);
-            RestRequest request = new RestRequest("/account/authentication", Method.POST);
+            RestRequest request = new RestRequest("/api/account/authentication", Method.POST);
             request.AddHeader("X-Username", username);
             request.AddHeader("X-Password", MD5Tool.GetMD5(MD5Tool.GetMD5(MD5Tool.GetMD5(password) + username) + "1234"));
             var response = client.Execute<LoginResult>(request);

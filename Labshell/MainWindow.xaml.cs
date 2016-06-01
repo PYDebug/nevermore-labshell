@@ -131,34 +131,7 @@ namespace Labshell
                 };
                 records.Add(ur);
             }
-            RecordResult rr = rcf.GetRecord(CacheService.Instance.ExperimentId, records, CacheService.Instance.GetStuToken());
-            if (rr != null)
-            {
-                if (rr.code == "200")
-                {
-                    foreach(RecordResult.Record r in rr.data)
-                    {
-                        try
-                        {
-                            CacheService.Instance.GetStudent(r.studentId).RecordId = r.id;
-                        }
-                        catch (Exception)
-                        {
-                            LSMessageBox.Show("实验异常","获取学生异常");
-                        }
-                    }
-                }
-                else
-                {
-                    LSMessageBox.Show("实验异常", rr.message);
-                    return;
-                }
-            }
-            else 
-            {
-                LSMessageBox.Show("网络错误", "网络异常");
-                return;
-            }
+            rcf.GetRecord(CacheService.Instance.ExperimentId, records, CacheService.Instance.GetStuToken());
             launch(CacheService.Instance.LaunchPath);
             ProcessingWindow processingWindow = new ProcessingWindow();
             processingWindow.Show();
@@ -183,11 +156,21 @@ namespace Labshell
                             {
                                 try
                                 {
-                                    student.ClassId = rr.data.clazz.id;
-                                    LSMessageBox.Show("班级ID", rr.data.clazz.id+"");
-                                    CacheService.Instance.AddStuList(student);
-                                    students.Add(student);
-                                    this.studentList.Items.Refresh();
+                                    if (rr.data.clazz == null)
+                                    {
+                                        student.ClassId = -1;
+                                        CacheService.Instance.AddStuList(student);
+                                        students.Add(student);
+                                        this.studentList.Items.Refresh();
+                                    }
+                                    else
+                                    {
+                                        student.ClassId = rr.data.clazz.id;
+                                        //LSMessageBox.Show("班级ID", rr.data.clazz.id+"");
+                                        CacheService.Instance.AddStuList(student);
+                                        students.Add(student);
+                                        this.studentList.Items.Refresh();
+                                    }
                                 }
                                 catch (ArgumentException)
                                 {

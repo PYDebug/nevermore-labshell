@@ -16,7 +16,7 @@ namespace Labshell.Factory
         public List<Lab> AllLab()
         {
             RestClient client = new RestClient(ServerURL.URL);
-            RestRequest request = new RestRequest("/manage/lab/labs", Method.GET);
+            RestRequest request = new RestRequest("/api/manage/lab/labs", Method.GET);
             request.AddQueryParameter("scope","all");
             request.AddParameter("pageSize", 10000);
             var response = client.Execute<LabResult>(request);

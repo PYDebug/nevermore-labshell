@@ -31,13 +31,20 @@ namespace Labshell
                     {
                         CacheService.Instance.SetMachineConf(mr);
                     }
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
                 }
-                else if(mr.code == "402")
+                else if (mr.code == "402")
                 {
-                    LSMessageBox.Show("提示","当前机器没有配置");
+                    LSMessageBox.Show("提示", "当前机器没有配置");
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
                 }
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                else
+                {
+                    LSMessageBox.Show("获取配置错误", "网络异常，请确认网络连接并重新打开");
+                    this.Shutdown();
+                }
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,7 +64,7 @@ namespace Labshell.Service
             if (task.Contains(0))
             {
                 String timepath = DateTime.Now.Hour.ToString() + "_" + DateTime.Now.Minute.ToString() + "_" + DateTime.Now.Second.ToString() + "_" + device_id;
-                string img = this.save_path + "/" + timepath + ".jpg";
+                string img = this.save_path + "\\" + timepath + ".jpg";
                 bitmap.Save(img);
                 task.Remove(0);
 
@@ -87,33 +87,34 @@ namespace Labshell.Service
                         {
                             if (ar.code == "200")
                             {
-                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.SUCCESS, FilePath = img, Id = fr.data.id };
+                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.SUCCESS, FilePath = img, Id = fr.data.id, Color = "#FF979797", Operation = UploadFile.OPENDOC };
                                 this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                             }
                             else
                             {
-                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                                UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                                 this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                             }
                         }
                         else
                         {
-                            UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                            UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                             this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                         }
                     }
                     else
                     {
-                        UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                        UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                         this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                     }
                 }
                 else
                 {
-                    UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1 };
+                    UploadFile up = new UploadFile() { FileName = timepath + ".jpg", FileType = fileType, Status = UploadFile.FAIL, FilePath = img, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                     this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                 }
             }
+            GC.Collect();
         }
 
         public void AddTask()

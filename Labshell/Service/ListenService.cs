@@ -19,7 +19,7 @@ namespace Labshell.Service
 
         private String type;
 
-        private String filter;
+        private List<String> filter = new List<String>();
 
         private String fileType;
 
@@ -49,6 +49,7 @@ namespace Labshell.Service
 
         private void WatchCreated(object sender, FileSystemEventArgs e)
         {
+            Thread.Sleep(3000);
             FileInfo fi = new FileInfo(e.FullPath);
             FileResult fr = rf.UploadFile(fi.FullName, CacheService.Instance.GetStuToken());
             if (fr != null)
@@ -69,30 +70,30 @@ namespace Labshell.Service
                     {
                         if (ar.code == "200")
                         {
-                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id };
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.SUCCESS, FilePath = fi.FullName, Id = fr.data.id, Color = "#FF979797", Operation = UploadFile.OPENDOC };
                             this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                         }
                         else
                         {
-                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                            UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1, Color="Red", Operation = UploadFile.REUPLOAD };
                             this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                         }
                     }
                     else
                     {
-                        UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                        UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                         this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                     }
                 }
                 else
                 {
-                    UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                    UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                     this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
                 }
             }
             else
             {
-                UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1 };
+                UploadFile up = new UploadFile() { FileName = fi.Name, FileType = fileType, Status = UploadFile.FAIL, FilePath = fi.FullName, Id = -1, Color = "Red", Operation = UploadFile.REUPLOAD };
                 this.cb.Dispatcher.BeginInvoke(updateListBoxAction, this.cb, up);
             }
         }
@@ -101,18 +102,21 @@ namespace Labshell.Service
         {
             foreach (ListenPath path in lp)
             {
-                FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.BeginInit();
-                watcher.Path = path.Path;
-                watcher.EnableRaisingEvents = true;
-                watcher.Filter = filter;
-                watcher.Created += new FileSystemEventHandler(WatchCreated);
-                watcher.EndInit();
-                watchers.Add(watcher);
+                foreach (String f in filter)
+                {
+                    FileSystemWatcher watcher = new FileSystemWatcher();
+                    watcher.BeginInit();
+                    watcher.Path = path.Path;
+                    watcher.EnableRaisingEvents = true;
+                    watcher.Filter = f;
+                    watcher.Created += new FileSystemEventHandler(WatchCreated);
+                    watcher.EndInit();
+                    watchers.Add(watcher);
+                }
             }
         }
 
-        public void SetFilter(String f)
+        public void SetFilter(List<String> f)
         {
             this.filter = f;
         }

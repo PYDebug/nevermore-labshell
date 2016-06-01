@@ -20,6 +20,10 @@ namespace Labshell.Model
 
         public static String FAIL = "上传失败";
 
+        public static String OPENDOC = "打开文件夹";
+
+        public static String REUPLOAD = "重新上传";
+
         public String FileName { get; set; }
 
         public String FileType { get; set; }
@@ -30,5 +34,8 @@ namespace Labshell.Model
 
         public int Id { get; set; }
 
+        public String Color { get; set; }
+
+        public String Operation { get; set; }
     }
 }

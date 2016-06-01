@@ -43,8 +43,8 @@
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="{Binding FileName}" Padding="0,0,10,0" Height="23" Width="260" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
                                 <Label Content="{Binding FileType}" Padding="0,0,15,0" Height="23" Width="115" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
-                                <Label Content="{Binding Status}" Padding="0,0,15,0" Height="23" Width="97" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="#FF979797"/>
-                                <Label Content="打开文件夹" Tag="{Binding FilePath}" Padding="0,0,15,0" Height="23" Width="101" HorizontalContentAlignment="Center" FontSize="11" Foreground="#FF00A1CC" VerticalContentAlignment="Center" MouseDown="OpenLabel_MouseDown" Cursor="Hand"/>
+                                <Label Content="{Binding Status}" Padding="0,0,15,0" Height="23" Width="97" HorizontalContentAlignment="Center" FontSize="11" VerticalContentAlignment="Center" Foreground="{Binding Color}"/>
+                                <Label Content="{Binding Operation}" Tag="{Binding FilePath}" Padding="0,0,15,0" Height="23" Width="101" HorizontalContentAlignment="Center" FontSize="11" Foreground="#FF00A1CC" VerticalContentAlignment="Center" MouseDown="OpenLabel_MouseDown" Cursor="Hand"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

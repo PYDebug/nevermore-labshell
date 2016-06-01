@@ -15,7 +15,7 @@ namespace Labshell.Factory
         public ReservationResult GetValidity(int labId, String token)
         {
             RestClient client = new RestClient(ServerURL.URL);
-            RestRequest request = new RestRequest("/reservation/validity", Method.GET);
+            RestRequest request = new RestRequest("/api/reservation/validity", Method.GET);
             request.AddHeader("x-auth-token", token);
             request.AddQueryParameter("labId", labId+"");
             var response = client.Execute<ReservationResult>(request);
